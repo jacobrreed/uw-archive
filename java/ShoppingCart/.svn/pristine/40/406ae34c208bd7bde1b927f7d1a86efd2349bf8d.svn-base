@@ -1,0 +1,122 @@
+/*
+ * TCSS 305 - Spring 2017
+ * Assignment 2 - Shopping Cart
+ */
+package model;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+
+/**
+ * 
+ * Shopping Cart.
+ * @author Jacob Reed
+ * @version Apr 7, 2017
+ *
+ */
+public class ShoppingCart {
+    
+    /** ArrayList to hold ItemOrder. */
+    private ArrayList<ItemOrder> myCart;
+    /** Boolean for membership status. */
+    private boolean myMembership;
+    /** BigDec to hold total cost. */
+    private BigDecimal myTotal;
+    
+    /**
+     * Constructor that creates an empty shopping cart.
+     */
+    public ShoppingCart() {
+        myCart = new ArrayList<ItemOrder>();
+        myMembership = false;
+        myTotal = new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN);
+    }
+
+    /**
+     * Adds an order to the shopping cart, replacing any previous,
+     * order for an equivalent item with the new order.
+     * @param theOrder ItemOrder
+     */
+    public void add(final ItemOrder theOrder) {
+        if (theOrder == null) {
+            throw new NullPointerException("Order is null.");
+        } else {
+            if (myCart.contains(theOrder)) {
+                myCart.remove(theOrder);
+                myCart.add(theOrder);   //POSSIBLY FIX
+            } else {
+                myCart.add(theOrder);
+            }
+        }
+    }
+
+
+    /**
+     * Sets whether or not customer for this shopping cart has a store membership.
+     * @param theMembership True if member, false otherwise.
+     */
+    public void setMembership(final boolean theMembership) {
+        myMembership = theMembership;
+    }
+
+    /**
+     * Generates total cost of this shopping cart.
+     * @return Returns total cost using a scale of 2 (ROUND_HALF_EVEN)
+     */
+    public BigDecimal calculateTotal() {
+        for (final ItemOrder x : myCart) {
+            if (x.getItem().isBulk()) { //If has bulk pricing
+                final int tempBQ = x.getItem().getBulkQuantity();
+                final BigDecimal tempBP = x.getItem().getBulkPrice();
+                final BigDecimal tempPrice = x.getItem().getPrice();
+                int tempQuant = x.getQuantity();
+                
+                double tempTotal = 0;
+                /*
+                 * While quantity is >= Bulk quantity
+                 * add the value of bulk price
+                 * then subtract that bulk quantity from quantity left
+                 * If quantity left is < bulk quantity required 
+                 * exit loop
+                 */
+                while (tempQuant >= tempBQ) {
+                    tempTotal += tempBP.doubleValue();
+                    tempQuant -= tempBQ;
+                }
+                tempTotal += tempQuant * tempPrice.doubleValue();
+                myTotal = myTotal.add(
+                            new BigDecimal(tempTotal).setScale(2, RoundingMode.HALF_EVEN));
+            } else {
+                //If no bulk pricing
+                final double tempPrice = (x.getItem().getPrice().doubleValue()) 
+                                * x.getQuantity();
+                myTotal = myTotal.add(
+                              new BigDecimal(tempPrice).setScale(2, RoundingMode.HALF_EVEN));
+                
+            }
+        }
+        return myTotal; 
+    }
+    
+    /**
+     * Removes all orders from cart.
+     */
+    public void clear() {
+        myCart.clear();
+    }
+
+    @Override
+    /**
+     * Returns a String representation of this ShoppingCart.
+     * @return String for shopping cart
+     */
+    public String toString() {
+        String result = "";
+        for (ItemOrder x : myCart) {
+            result += x.toString();
+        }
+        return result;
+    }
+
+}

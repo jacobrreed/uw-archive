@@ -1,0 +1,122 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Humans move in a random direction (straight, left, or right), always on grass or crosswalks.
+ * A human never reverses direction unless there is no other option.
+ * If a human is next to a crosswalk it will always 
+ * choose to turn to face in the direction of the crosswalk.
+ * (The map of terrain will never contain crosswalks that
+ * are so close together that a human might be
+ * adjacent to more than one at the same time.)
+ * Humans do not travel through crosswalks when the crosswalk
+ * light is green. If a human is facing a green
+ * crosswalk, it will wait until the light changes to yellow 
+ * and then cross through the crosswalk. The
+ * human will not turn to avoid the crosswalk.
+ * Humans travel through crosswalks when the crosswalk light is yellow or red.
+ * Humans ignore the color of traffic lights.
+ * Collision behavior: A human dies if it collides with any living 
+ * vehicle except another human, and stays
+ * dead for 50 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Human implements Vehicle  {
+    /** Is vehicle alive or not? */
+    private boolean myAlive;
+    /** Pokes for revival. */
+    private int myPokes;
+    /** Direction. */
+    private Direction myDirection;
+    /** X value. */
+    private int myX;
+    /** Y value. */
+    private int myY;
+    
+    @Override
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Direction chooseDirection(final Map<Direction, Terrain> theNeighbors) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void collide(final Vehicle theOther) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int getDeathTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getImageFileName() {
+        String result = "";
+        if (myAlive) {
+            result = "human.gif";
+        } else {
+            result = "human_dead.gif";
+        }
+        return result;
+    }
+
+    @Override
+    public Direction getDirection() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getX() {
+        return myX;
+    }
+
+    @Override
+    public int getY() {
+        return myY;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return myAlive;
+    }
+
+    @Override
+    public void poke() {
+        myPokes++;
+    }
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setDirection(final Direction theDir) {
+        myDirection = theDir;
+    }
+
+    @Override
+    public void setX(final int theX) {
+        myX = theX;
+    }
+
+    @Override
+    public void setY(final int theY) {
+        myY = theY;
+    }
+
+}

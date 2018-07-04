@@ -1,0 +1,19 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * ATVs can travel on any terrain except walls. They randomly select to go
+ * straight, turn left, or turn right. ATV’s never reverse direction (they never need to).
+ *  ATV’s
+ * drive through all traffic lights and crosswalk lights without stopping!
+ * Collision behavior: An ATV dies if it collides with a living truck, car, 
+ * or taxi, and stays dead for 20 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Atv extends AbstractVehicle {
+    
+}

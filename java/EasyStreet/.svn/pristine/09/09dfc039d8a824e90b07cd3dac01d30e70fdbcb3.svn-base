@@ -1,0 +1,72 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Humans move in a random direction (straight, left, or right), always on grass or crosswalks.
+ * A human never reverses direction unless there is no other option.
+ * If a human is next to a crosswalk it will always 
+ * choose to turn to face in the direction of the crosswalk.
+ * (The map of terrain will never contain crosswalks that
+ * are so close together that a human might be
+ * adjacent to more than one at the same time.)
+ * Humans do not travel through crosswalks when the crosswalk
+ * light is green. If a human is facing a green
+ * crosswalk, it will wait until the light changes to yellow 
+ * and then cross through the crosswalk. The
+ * human will not turn to avoid the crosswalk.
+ * Humans travel through crosswalks when the crosswalk light is yellow or red.
+ * Humans ignore the color of traffic lights.
+ * Collision behavior: A human dies if it collides with any living 
+ * vehicle except another human, and stays
+ * dead for 50 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Human extends AbstractVehicle {
+    /** Death timer. */
+    private final int myDeathTime = 50;
+    /**
+     * Constructor.
+     * @param theX X coordinate.
+     * @param theY Y coordinate.
+     * @param theDir Direction.
+     */
+    public Human(final int theX, final int theY, 
+                 final Direction theDir) {
+        super(theX, theY, theDir);
+    }
+    
+    /**
+     * Returns whether or not truck can pass through terrain dependant on light.
+     * @param theTerrain Terrain to analyze.
+     * @param theLight Whether light is green or red.
+     * @return Can vehicle pass. True if so.
+     */
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        boolean result = false;
+        if (theTerrain == Terrain.CROSSWALK 
+                        && (theLight == Light.YELLOW || theLight == Light.GREEN)) {
+            result = true;
+        } else if (theTerrain == Terrain.GRASS) {
+            result = true;
+        }
+        return result;
+    } 
+    
+    /**
+     * Checks collision of vehicle.
+     * @param theOther Vehicle collided with.
+     */
+    public void  collide(final Vehicle theOther) {
+        final String colVeh = theOther.getClass().getSimpleName().toLowerCase();
+        if (!("human".equals(colVeh))) {
+            myAlive = false;
+            myDeathTimer = myDeathTime;
+        } else {
+            myAlive = true;
+        }
+    }
+}

@@ -1,0 +1,277 @@
+/*
+ * TCSS 305 - Assignment 4: SnapShop
+ */
+
+package gui;
+
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import filters.Filter;
+import image.PixelImage;
+
+/**
+ * 
+ * SnapSHopGUI.java.
+ * @author Jacob Reed
+ * @version Apr 21, 2017
+ *
+ */
+public class SnapShopGUI extends JFrame {
+    
+    /** Generates UID. */
+    private static final long serialVersionUID = -2144739668936849562L;
+    /** Last 3 buttons int. */
+    private static final int LAST_THREE = 3;
+    /** Button Width. */
+    private static final int B_WIDTH = 150;
+    /** Button Height. */
+    private static final int B_HEIGHT = 30;
+    /** Main JPanel. */
+    private JPanel myPanel;
+    /** Button Panel. */
+    private JPanel myButtonPanel;
+    /** Top Button Panel. */
+    private JPanel myTopButtonPanel;
+    /** Bottom Button Panel. */
+    private JPanel myBottomButtonPanel;
+    /** Image Panel. */
+    private JPanel myImagePanel;
+    /**Image Label. */
+    private JLabel myImageLabel;
+    /** Open... */
+    private String myOpenString = "Open...";
+    /** String array that holds button labels. */
+    private String[] myButtonLabels = {"Edge Detect", "Edge Highlight", "Flip Horizontal",
+                                       "Flip Vertical", "Grayscale", "Sharpen", "Soften", 
+                                       myOpenString, "Save As...", "Close Image"};;
+    /** JButton List. */
+    private List<JButton> myButtonList;
+    /** JFileChooser for opening and saving. */
+    private JFileChooser myFileChooser;
+    /** Default Button size. */
+    private Dimension myDefaultButtonSize;
+    /** File. */
+    private File myFile;
+    /** Image File. */
+    private PixelImage myImage;
+    /** Image Filter. */
+    private Filter myFilter;
+
+
+    
+    /**
+     * Constructor.
+     */
+    public SnapShopGUI() {
+        myDefaultButtonSize  = new Dimension(B_WIDTH, B_HEIGHT);
+        myFileChooser = new JFileChooser();
+    }
+    /**
+     * Starts GUI.
+     */
+    public void start() {
+        setTitle("TCSS 305 SnapShop"); //sets title
+        setLocationRelativeTo(null); //opens window centered
+        //makes it so when you press X the window closes
+        setDefaultCloseOperation(EXIT_ON_CLOSE); 
+        this.setVisible(true); //make visible
+        createLayout();
+        createButtons();
+        disableButtons();
+        addListeners();
+        this.pack();
+    }
+    
+    /**
+     * Setups components for window such as JPanel and layout manager.
+     */
+    private void createLayout() {
+        //Main Panel
+        myPanel = new JPanel(new BorderLayout());
+        //Button Panel held in west.
+        myButtonPanel = new JPanel(new BorderLayout());
+        //Top buttons
+        myBottomButtonPanel = new JPanel(new GridLayout(0, 1));
+        //Bottom buttons
+        myTopButtonPanel = new JPanel(new GridLayout(0, 1));
+        
+        //Add top and button button panels to main button panel.
+        myButtonPanel.add(myTopButtonPanel, BorderLayout.NORTH);
+        myButtonPanel.add(myBottomButtonPanel, BorderLayout.SOUTH);
+     
+        //Add button panel to main panel.
+        myPanel.add(myButtonPanel, BorderLayout.WEST);
+        //Add main panel & button panel to main frame
+        this.add(myPanel);
+    }
+    
+    /**
+     * Setups buttons on window.
+     */
+    private void createButtons() {
+        //Linked list that stores all buttons.
+        myButtonList = new LinkedList<JButton>();
+        
+        //For loop that adds all buttons to list
+        for (int i = 0; i < myButtonLabels.length; i++) {
+            myButtonList.add(new JButton(myButtonLabels[i]));
+            
+        }
+        
+        //For loop that adds all buttons in list to the panel
+        for (int i = 0; i < myButtonList.size(); i++) {
+            myButtonList.get(i).setPreferredSize(new Dimension(
+                                                 myDefaultButtonSize)); //sets button size
+            //add to top button panel
+            if (i < myButtonList.size() - LAST_THREE) {
+                myTopButtonPanel.add(myButtonList.get(i));
+            } else {
+                //add to bottom button panel
+                myBottomButtonPanel.add(myButtonList.get(i));
+            }
+        }
+    }
+    
+    /**
+     * Disabled all buttons except for "Open...".
+     */
+    private void disableButtons() {
+        for (int i = 0; i < myButtonList.size(); i++) {
+            //if not Open button disable
+            if (!(myButtonLabels[i].equals(myOpenString))) {
+                myButtonList.get(i).setEnabled(false);
+            }
+        }
+    }
+    
+    /**
+     * Enables all buttons.
+     */
+    private void enableButtons() {
+        for (int i = 0; i < myButtonList.size(); i++) {
+            myButtonList.get(i).setEnabled(true);
+        }
+    }
+    
+    /**
+     * Adds listeners to every buttons.
+     */
+    private void addListeners() {
+        for (int i = 0; i < myButtonList.size(); i++) {
+            switch (myButtonList.get(i).getText()) {
+                case "Edge Detect": myButtonList.get(i).addActionListener(event -> {
+                    //add filter   
+                });
+                    break;
+                case "Edge Highlight": myButtonList.get(i).addActionListener(event -> {
+                    //add filter
+                });
+                    break;
+                case "Flip Horizontal": myButtonList.get(i).addActionListener(event -> {
+                    //add filter
+                });
+                    break;
+                case "Flip Vertical": myButtonList.get(i).addActionListener(event -> {
+                    //add filter
+                });
+                    break;
+                case "Grayscale": myButtonList.get(i).addActionListener(event -> {
+                    //add filter
+                });
+                    break;
+                case "Sharpen": myButtonList.get(i).addActionListener(event -> {
+                    //add filter
+                });
+                    break;
+                case "Soften": myButtonList.get(i).addActionListener(event -> {
+                    //add filter
+                });
+                    break;
+                case "Open...": myButtonList.get(i).addActionListener(event -> {
+                    openFile();
+                });
+                    break;
+                case "Save As...": myButtonList.get(i).addActionListener(event -> {
+                    saveFile();
+                });
+                    break;
+                case "Close Image": myButtonList.get(i).addActionListener(event -> {
+                    closeFile();
+                });
+                    break;
+                default: break; //Should never happen
+            }
+        }
+    }
+    
+    /**
+     * Opens file and gives a warning if non image.
+     */
+    private void openFile() {
+        //add image panel
+        myImagePanel = new JPanel();
+        myImageLabel = new JLabel();
+        myImagePanel.add(myImageLabel);
+        //Add image panel to main panel
+        myPanel.add(myImagePanel, BorderLayout.EAST);
+        
+        final int returnVal = myFileChooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            myFile = myFileChooser.getSelectedFile();
+            try {
+                myImage = PixelImage.load(myFile);
+                myImageLabel.setIcon(new ImageIcon(myImage));
+                enableButtons();
+                this.pack();
+            } catch (final IOException exception) {
+                JOptionPane.showMessageDialog(null, 
+                            "The selected file did not contain an image!");
+            }
+        } else {
+            System.out.println("ERROR FILE"); //PLACEHOLDER
+        }
+    }
+    
+    /**
+     * Closes file.
+     */
+    private void closeFile() {
+        //Remove image
+        myImageLabel.setIcon(null);
+        //remove panel
+        myPanel.remove(myImagePanel);
+        //disable buttons
+        disableButtons();
+        //repack
+        this.pack();
+    }
+    
+    /**
+     * Saves file.
+     */
+    private void saveFile() {
+        final int result = myFileChooser.showSaveDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                myImage.save(myFileChooser.getSelectedFile());
+            } catch (final IOException exception) {
+                JOptionPane.showMessageDialog(null, "Could not save file!");
+            }
+        }
+    }
+}

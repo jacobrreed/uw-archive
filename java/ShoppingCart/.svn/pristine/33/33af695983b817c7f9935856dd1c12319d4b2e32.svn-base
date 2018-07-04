@@ -1,0 +1,54 @@
+/*
+ * TCSS 305 - Spring 2017
+ * Assignment 2 - Shopping Cart
+ */
+package model;
+
+/**
+ * 
+ * Item Order.
+ * @author Jacob Reed
+ * @version Apr 7, 2017
+ *
+ */
+public final class ItemOrder {
+
+    /**
+     * Constructor that creates an item order for the given quantity of the given Item.
+     * @param theItem Item Object
+     * @param theQuantity int for quantity
+     */
+    public ItemOrder(final Item theItem, final int theQuantity) {
+
+    }
+
+    /**
+     * Gets item.
+     * @return Returns a reference to the Item in this ItemOrder
+     */
+    public Item getItem() {
+        
+        return null;
+    }
+    
+    /**
+     * Gets Quantity.
+     * @return int for quantity of item.
+     */
+    public int getQuantity() {
+        
+        return 0;
+    }
+
+
+    @Override
+    /**
+     * String representation of this ItemOrder
+     * @return String for item order
+     */
+    public String toString() {
+
+        return null;
+    }
+
+}

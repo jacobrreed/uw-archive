@@ -1,0 +1,28 @@
+Tetris 
+TCSS 305: Programming Practicum, Spring 2017
+
+Name: Jacob Reed
+UWNetID: jrreed
+Subversion Revision Number:
+
+Assignment Overview:
+For part A of this assignment I had to create the GUI for Tetris and get the back end mostly working except scoring, new game, end game, pause game, and resume game. I also had to get the front end completely working. The purpose of this assignment was to familiarize myself with key bindings and the observer design pattern.
+
+Technical Impression:
+I started off spending a lot of time in this assignment learning about key bindings and input/action maps, which took up a lot of my time. Even though key binds weren’t required and I could of just used key listeners instead, I wanted to learn more about a more efficient way to set and remove key bindings, in the end it was worth it because I learned a lot about them. I had the function of being able to allow the user to set their own key bindings, but it was buggy and so in the end I decided to remove it. Another difficult task of the assignment was getting the actual pieces to display correctly on the board given the array list of blocks from the back end, which was upside down. Something I could just not figure out was how to get the correct rotation of the block that shows up in the next piece panel. The Board was passing the TetrisPiece through the Observer pattern but the TetrisPiece does not hold its rotational state, so I figured maybe there was a way to use the ArrayList<Block[]> that the board was passing to determine the rotational state, and as we discussed in class the Board holds the next piece above the other ones in array, but I couldn’t figure out how to get its rotational state properly. Overall besides that problem that I couldn’t figure out (hopefully I can figure it out by part B submission time) overall I think I did pretty well on part A. I have already mostly completed part B, I just need to fix the scoring algorithm and counts the frozen blocks properly.
+
+Changes to the starter code:
+none
+
+
+Extra Credit:
+none
+
+
+Unresolved problems in my submission:
+Could not figure out how to get the correct rotation in next piece panel.
+
+
+Questions:
+none
+

@@ -1,0 +1,67 @@
+/*
+ * TCSS 305 - Spring 2017
+ * Assignment 2 - Shopping Cart
+ */
+package model;
+
+import java.util.Objects;
+
+/**
+ * 
+ * Item Order.
+ * @author Jacob Reed
+ * @version Apr 7, 2017
+ *
+ */
+public final class ItemOrder {
+    /** Item. */
+    private Item myItem;
+    /** Quantity of item. */
+    private int myQuantity;
+    
+    /**
+     * Constructor that creates an item order for the given quantity of the given Item.
+     * @param theItem Item Object
+     * @param theQuantity int for quantity
+     */
+    public ItemOrder(final Item theItem, final int theQuantity) {
+        if (theQuantity < 0) {
+            throw new IllegalArgumentException("Quantity must be 0 or higher.");
+        } else {
+            myQuantity = theQuantity;
+        }
+        
+        Objects.requireNonNull(theItem);
+        myItem = theItem.copy();
+    }
+
+    /**
+     * Gets item.
+     * @return Returns a reference to the Item in this ItemOrder
+     */
+    public Item getItem() {
+        return myItem; 
+    }
+    
+    /**
+     * Gets Quantity.
+     * @return int for quantity of item.
+     */
+    public int getQuantity() {
+        return myQuantity;
+    }
+
+
+    @Override
+    /**
+     * String representation of this ItemOrder
+     * @return String for item order
+     */
+    public String toString() {
+        String result = "";
+        result += myItem.getName();
+        result += " x " + myQuantity;
+        return result;
+    }
+
+}

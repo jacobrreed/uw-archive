@@ -1,0 +1,14 @@
+{
+    "name": "ForestFire",
+    "description": "Forest Fire simulation using cellular autonoma, mongojs, nodejs, socketio, express",
+    "private": true,
+    "dependencies": {
+        "express": "4.2.0",
+        "connect": "*",
+        "body-parser": "*",
+        "morgan": "*",
+        "mongojs": "*",
+        "jade": "*",
+        "socket.io": "*"
+    }
+}

@@ -1,0 +1,111 @@
+/*
+ * TCSS 305 - Spring 2017
+ * Assignment 2 - Shopping Cart
+ */
+package model;
+
+import java.math.BigDecimal;
+
+/**
+ * 
+ * Item.
+ * @author Jacob Reed
+ * @version Apr 7, 2017
+ *
+ */
+public final class Item {
+    
+    /**
+     * Constructor that takes a name and price as arguments.
+     * @param theName String containing name of item
+     * @param thePrice BigDecimal containing price of item
+     */
+    public Item(final String theName, final BigDecimal thePrice) {
+
+    }
+
+    /**
+     * Constructor that takes a name, a single item price, bulk quantity, 
+     * and a bulk price as arguments.
+     * @param theName String containing name of item
+     * @param thePrice BigDecimal containing price of item
+     * @param theBulkQuantity Int containing bulk quantity amount
+     * @param theBulkPrice BigDecimal containing bulk quantity price
+     */
+    public Item(final String theName, final BigDecimal thePrice, final int theBulkQuantity,
+                final BigDecimal theBulkPrice) {
+
+    }
+
+    /**
+     * Returns single item price.
+     * @return BigDecimal containing price of single item
+     */
+    public BigDecimal getPrice() {
+        
+        return null;
+    }
+    
+    /**
+     * Gets bulk quantity for item.
+     * @return int containing number of bulk quantity
+     */
+    public int getBulkQuantity() {
+        
+        return 0;
+    }
+    
+    /**
+     * Gets bulk price of item.
+     * @return BigDecimal of price of item in bulk.
+     */
+    public BigDecimal getBulkPrice() {
+        
+        return null;
+    }
+
+    /**
+     * Is the item bulk priced or not?
+     * @return True if bulk pricing available, false otherwise.
+     */
+    public boolean isBulk() {
+        
+        return false;
+    }
+    
+  
+    @Override
+    /**
+     * Override of toString method that returns.
+     * @return "NameofItem, PriceofItem (BulkQuantity for BulkPrice)"
+     */
+    public String toString() {
+        
+        return null;
+    }
+
+
+    @Override
+    /**
+     * Override of equals method that checks the exact name.
+     * Price, bulk quantity, and bulk price.
+     * @param theOther Object to compare
+     * @return True if the same, false otherwise
+     */
+    public boolean equals(final Object theOther) {
+        
+        return false;
+    }
+
+
+    @Override
+    /**
+     * Returns integer hash code for this item.
+     * @return int of hashcode.
+     */
+    public int hashCode() {
+        
+        return 0;
+    }
+
+}

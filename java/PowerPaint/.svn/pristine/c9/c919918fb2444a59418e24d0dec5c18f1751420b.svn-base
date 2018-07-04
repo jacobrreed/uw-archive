@@ -1,0 +1,30 @@
+/**
+ * PowerPaint
+ * Assignment 5
+ * Spring 2017 TCSS 305
+ */
+package tools;
+
+import java.awt.Shape;
+import java.awt.geom.Point2D;
+
+/**
+ * Square Tool.
+ * @author Jacob Reed
+ * @version Apr 28, 2017
+ *
+ */
+public class SquareTool extends AbstractTool {
+
+    public SquareTool(Point2D theStart, Point2D theEnd) {
+        super(theStart, theEnd);
+        // TODO Auto-generated constructor stub
+    }
+    //TODO
+
+    @Override
+    public Shape getShape() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+}

@@ -1,0 +1,22 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Trucks travel only on streets and through lights and crosswalks.
+ * Trucks randomly select to go straight, turn left, or turn right. 
+ * As a last resort, if none of these three,
+ * directions is legal (all not streets, lights, or crosswalks), the truck turns around.
+ * Trucks drive through all traffic lights without stopping!
+ * Trucks stop for red crosswalk lights, but drive through yellow or
+ * green crosswalk lights without,
+ * stopping.
+ * Collision behavior: A truck survives a collision with anything, living or dead.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Truck extends AbstractVehicle {
+
+}

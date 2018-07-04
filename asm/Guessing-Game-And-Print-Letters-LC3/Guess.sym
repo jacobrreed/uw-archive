@@ -1,0 +1,21 @@
+//Symbol Name		Page Address
+//----------------	------------
+//	INV                     3095
+//	MAX                     30A5
+//	MIN                     30A6
+//	NL                      30A4
+//	ZERO                    30A3
+//	big                     3062
+//	checkNum                300C
+//	const                   3046
+//	correct                 3078
+//	correct2                308B
+//	endIt                   3045
+//	guess                   3047
+//	guessA                  306B
+//	guessAgain              302B
+//	invalidInput            3040
+//	small                   3057
+//	tooB                    3025
+//	tooS                    301F
+//	win                     3034

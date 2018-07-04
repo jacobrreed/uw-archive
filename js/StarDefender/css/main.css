@@ -1,0 +1,109 @@
+body {
+    background-color: black;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+textarea {
+    resize: none;
+    width: 295px;
+    height: 300px;
+    font-size: 20px;
+    font: Georgia;
+    background-color: black;
+    color: red;
+    border: none;
+    overflow: hidden;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    outline: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#uiText {
+    position: absolute;
+    left: 1160px;
+    top: 0px;
+    color: #8300fe;
+}
+
+#uiButtons {
+    position: absolute;
+    left: 1160px;
+    top: 360px;
+    z-index: 3;
+}
+
+#gameInfo {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 770px;
+    color: #8300fe;
+}
+
+#gameWorld {
+    background: transparent;
+    position: absolute;
+    left: 375px;
+    top: 38px;
+    z-index: 1;
+    outline: none;
+}
+
+#gameWorld2 {
+    background: transparent;
+    position: absolute;
+    left: 375px;
+    top: 38px;
+    z-index: 2;
+    pointer-events: none;
+    outline: none;
+}
+
+#gameOverlayScreen {
+    background: transparent;
+    position: absolute;
+    left: 300px;
+    top: 0px;
+    z-index: 3;
+    pointer-events: none;
+    outline: none;
+}
+
+#gameBorder {
+    position: absolute;
+    left: 340px;
+    top: 0px;
+    z-index: -1;
+}
+
+.gameInfo {
+    resize: none;
+    width: 300px;
+    height: 770px;
+    font-size: 20px;
+    font: Georgia;
+    background-color: black;
+    border: none;
+    overflow: visible;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    outline: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

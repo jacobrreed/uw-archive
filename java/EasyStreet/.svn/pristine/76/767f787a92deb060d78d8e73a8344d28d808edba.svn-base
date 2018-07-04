@@ -1,0 +1,117 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Taxis can only travel on streets and through lights and crosswalks.
+ * A taxi prefers to drive straight ahead if it can. If it cannot move 
+ * straight ahead, it turns left if possible; if
+ * it cannot turn left, it turns right if possible; as a last resort, it turns around.
+ * Taxis stop for red lights; if a traffic light is immediately ahead of the 
+ * taxi and the light is red, the Taxi
+ * stays still and does not move until the light turns green. It does not turn 
+ * to avoid the light. When the light
+ * turns green the taxi resumes its original direction. Taxis ignore yellow and green lights.
+ * Taxis stop for (temporarily) red crosswalk lights. If a crosswalk light is 
+ * immediately ahead of the taxi
+ * and the crosswalk light is red, the Taxi stays still and does not move for
+ * 3 clock cycles or until the
+ * crosswalk light turns green, whichever occurs first. It does not turn to avoid
+ * the crosswalk light. When
+ * the crosswalk light turns green, or after 3 clock cycles, whichever happens
+ * first, the taxi resumes its
+ * original direction. A Taxi will drive through yellow or green crosswalk
+ * lights without stopping.
+ * Collision behavior: A taxi dies if it collides with a living truck, and stays dead for 10 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Taxi implements Vehicle  {
+
+    @Override
+    public boolean canPass(Terrain theTerrain, Light theLight) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Direction chooseDirection(Map<Direction, Terrain> theNeighbors) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void collide(Vehicle theOther) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int getDeathTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getImageFileName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Direction getDirection() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getX() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getY() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean isAlive() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void poke() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setDirection(Direction theDir) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setX(int theX) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setY(int theY) {
+        // TODO Auto-generated method stub
+        
+    }
+
+}

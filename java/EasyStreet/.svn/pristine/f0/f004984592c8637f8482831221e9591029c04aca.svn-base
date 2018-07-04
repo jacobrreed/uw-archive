@@ -1,0 +1,116 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Trucks travel only on streets and through lights and crosswalks.
+ * Trucks randomly select to go straight, turn left, or turn right. 
+ * As a last resort, if none of these three,
+ * directions is legal (all not streets, lights, or crosswalks), the truck turns around.
+ * Trucks drive through all traffic lights without stopping!
+ * Trucks stop for red crosswalk lights, but drive through yellow or
+ * green crosswalk lights without,
+ * stopping.
+ * Collision behavior: A truck survives a collision with anything, living or dead.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Truck implements Vehicle  {
+    /** Is vehicle alive or not? */
+    private boolean myAlive;
+    /** Pokes for revival. */
+    private int myPokes;
+    /** Direction. */
+    private Direction myDirection;
+    /** X value. */
+    private int myX;
+    /** Y value. */
+    private int myY;
+    
+    @Override
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Direction chooseDirection(final Map<Direction, Terrain> theNeighbors) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void collide(final Vehicle theOther) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int getDeathTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getImageFileName() {
+        String result = "";
+        if (myAlive) {
+            result = "truck.gif";
+        } else {
+            result = "truck_dead.gif";
+        }
+        return result;
+    }
+
+    @Override
+    public Direction getDirection() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getX() {
+        return myX;
+    }
+
+    @Override
+    public int getY() {
+        // TODO Auto-generated method stub
+        return myY;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return myAlive;
+    }
+
+    @Override
+    public void poke() {
+        myPokes++;
+    }
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setDirection(final Direction theDir) {
+        myDirection = theDir;
+    }
+
+    @Override
+    public void setX(final int theX) {
+        myX = theX;
+        
+    }
+
+    @Override
+    public void setY(final int theY) {
+        myY = theY;
+    }
+
+}

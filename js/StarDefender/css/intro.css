@@ -1,0 +1,26 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    background: #222222;
+}
+
+#game {
+    background-image: url("../img/menu/menu.jpg");
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#introVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+#menuImage {
+    position: fixed;
+    min-width: 50%;
+    min-height: 50%;
+}

@@ -1,0 +1,30 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Humans move in a random direction (straight, left, or right), always on grass or crosswalks.
+ * A human never reverses direction unless there is no other option.
+ * If a human is next to a crosswalk it will always 
+ * choose to turn to face in the direction of the crosswalk.
+ * (The map of terrain will never contain crosswalks that
+ * are so close together that a human might be
+ * adjacent to more than one at the same time.)
+ * Humans do not travel through crosswalks when the crosswalk
+ * light is green. If a human is facing a green
+ * crosswalk, it will wait until the light changes to yellow 
+ * and then cross through the crosswalk. The
+ * human will not turn to avoid the crosswalk.
+ * Humans travel through crosswalks when the crosswalk light is yellow or red.
+ * Humans ignore the color of traffic lights.
+ * Collision behavior: A human dies if it collides with any living 
+ * vehicle except another human, and stays
+ * dead for 50 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Human extends AbstractVehicle {
+   
+}

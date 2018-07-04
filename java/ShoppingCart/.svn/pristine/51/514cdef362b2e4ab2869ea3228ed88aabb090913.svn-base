@@ -1,0 +1,199 @@
+/*
+ * TCSS 305 - Spring 2017
+ * Assignment 2 - Shopping Cart
+ */
+package model;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Objects;
+
+/**
+ * 
+ * Item.
+ * @author Jacob Reed
+ * @version Apr 7, 2017
+ *
+ */
+public final class Item {
+    
+    /** Name of item. */
+    private String myName;
+    /** Price of item. */
+    private BigDecimal myPrice;
+    /** Bulk quantity of item. */
+    private int myBulkQuantity;
+    /** Bulk price of item. */
+    private BigDecimal myBulkPrice;
+    
+    /**
+     * Constructor that takes a name and price as arguments.
+     * @param theName String containing name of item
+     * @param thePrice BigDecimal containing price of item
+     */
+    public Item(final String theName, final BigDecimal thePrice) {
+        setName(theName);
+        setPrice(thePrice);  
+        myBulkQuantity = 0;
+        myBulkPrice = new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN);
+    }
+    
+    /**
+     * Constructor that takes a name, a single item price, bulk quantity, 
+     * and a bulk price as arguments.
+     * @param theName String containing name of item
+     * @param thePrice BigDecimal containing price of item
+     * @param theBulkQuantity Int containing bulk quantity amount
+     * @param theBulkPrice BigDecimal containing bulk quantity price
+     */
+    public Item(final String theName, final BigDecimal thePrice, final int theBulkQuantity,
+                final BigDecimal theBulkPrice) {
+        setName(theName);
+        setPrice(thePrice);
+        if (theBulkQuantity < 0) {
+            throw new IllegalArgumentException("Bulk quantity less than 0.");
+        } else {
+            myBulkQuantity = theBulkQuantity;
+        }
+        //Bulk Price Check
+        if (theBulkPrice == null) {
+            throw new NullPointerException("Bulk Price is null.");
+        } else if (theBulkPrice.doubleValue() < 0) { //FIX
+            throw new IllegalArgumentException("Bulk price is < 0");
+        } else {
+            //FIX
+            myBulkPrice = new BigDecimal(
+                               theBulkPrice.doubleValue()).setScale(2, RoundingMode.HALF_EVEN);
+        }
+    }
+
+    /**
+     * Returns single item price.
+     * @return BigDecimal containing price of single item
+     */
+    public BigDecimal getPrice() {
+        return myPrice;
+    }
+    
+    /**
+     * Gets bulk quantity for item.
+     * @return int containing number of bulk quantity
+     */
+    public int getBulkQuantity() {
+        return myBulkQuantity;
+    }
+    
+    /**
+     * Gets bulk price of item.
+     * @return BigDecimal of price of item in bulk.
+     */
+    public BigDecimal getBulkPrice() {
+        return myBulkPrice; //FIX Immutable might cause encapsulation issues?
+    }
+
+    /**
+     * Is the item bulk priced or not?
+     * @return True if bulk pricing available, false otherwise.
+     */
+    public boolean isBulk() {
+        boolean result = false;
+        if (myBulkPrice.doubleValue() > 0) { //FIX - supposed to be double value?
+            result = true;
+        }
+        return result;
+    }
+    
+    /**
+     * Sets name of item. Checking for NullPointerExceptions and IllegalArgumentException.
+     * @param theName Name of item
+     */
+    private void setName(final String theName) {
+        if (theName == null || "".equals(theName)) {
+            throw new NullPointerException("Name of item is null or blank.");
+        }   else if ("".equals(theName)) { //If blank
+            throw new IllegalArgumentException("Name of item cannot be blank.");
+        }   else {
+            myName = theName;
+        }
+    }
+    
+    /**
+     * Sets price of item checking for exceptions.
+     * @param thePrice Price of item.
+     */
+    private void setPrice(final BigDecimal thePrice) {
+        if (thePrice == null) {
+            throw new NullPointerException("Price cannot be null");
+        } else if (thePrice.doubleValue() < 0) { //FIX - Should it be a double value return?
+            throw new IllegalArgumentException("Price must be greater than 0.");
+        } else {
+            myPrice = thePrice;
+        }
+    }
+    
+    /**
+     * Gets name of item. (For use in ItemOrder)
+     * @return String containing name of item.
+     */
+    public String getName() {
+        return myName;
+    }
+    
+    /**
+     * Clones item.
+     * @return Item cloned.
+     */
+    public Item copy() {
+        final Item cloneItem = new Item(myName, myPrice, myBulkQuantity, myBulkPrice);
+        return cloneItem;
+    }
+    
+    @Override
+    /**
+     * Override of toString method that returns.
+     * @return "NameofItem, PriceofItem (BulkQuantity for BulkPrice)"
+     */
+    public String toString() {
+        String result = "";
+        result += myName + ", " + myPrice;
+        if (isBulk()) {
+            result += " (" + myBulkQuantity + " for " + myBulkPrice + ")";
+        }
+        return result;
+    }
+
+
+    @Override
+    /**
+     * Override of equals method that checks the exact name.
+     * Price, bulk quantity, and bulk price.
+     * @param theOther Object to compare
+     * @return True if the same, false otherwise
+     */
+    public boolean equals(final Object theOther) {
+        boolean result = false;
+        if (theOther != null 
+                        && this.getClass() == theOther.getClass()) {
+            //Cast as Item
+            final Item tempItem = (Item) theOther;
+            //Check name, price, bulk quantity, and bulk price
+            if ((myName.equals(tempItem.myName)) && (myPrice.equals(tempItem.myPrice))
+                            && (myBulkQuantity == tempItem.getBulkQuantity())
+                                && (myBulkPrice.equals(tempItem.myBulkPrice))) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+
+    @Override
+    /**
+     * Returns integer hash code for this item.
+     * @return int of hashcode.
+     */
+    public int hashCode() {
+        return Objects.hash(myName, myPrice, myBulkQuantity, myBulkPrice);
+    }
+
+}

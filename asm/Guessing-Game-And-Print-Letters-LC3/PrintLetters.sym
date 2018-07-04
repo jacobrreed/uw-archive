@@ -1,0 +1,8 @@
+//Symbol Name		Page Address
+//----------------	------------
+//	alpha                   3016
+//	counter                 3017
+//	end                     3015
+//	inOrder                 3003
+//	resetCounter            300A
+//	reversePrint            300E

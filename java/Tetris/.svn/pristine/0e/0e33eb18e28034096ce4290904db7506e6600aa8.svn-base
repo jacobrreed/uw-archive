@@ -1,0 +1,120 @@
+package view;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Random;
+import javax.swing.JPanel;
+import model.Block;
+
+/**
+ * 
+ * Game Board.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class GamePanel extends JPanel implements Observer {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = -996104457414022004L;
+    /** Size of Board. */
+    private static final Dimension GAME_DIM = new Dimension(300, 400);
+    /** Size of pieces. */
+    private static final int PIECE_SIZE = 30;
+    /** Block list. */
+    private List<Block[]> myBlockList;
+    /**Grid. */
+    private boolean myGrid;
+    /** Game status. */
+    private Boolean myGameStatus;
+    
+    /**
+     * Constructor.
+     */
+    public GamePanel() {
+        super();
+        setBackground(Color.BLACK);
+        setPreferredSize(GAME_DIM);
+        myBlockList = new ArrayList<Block[]>();
+        myGrid = true;
+        myGameStatus = false;
+    }
+    
+    /**
+     * Gets a random RGB color, for extra credit later.
+     * @return Random color.
+     */
+    private Color getRandomColor() {
+        final Random random = new Random();
+        final int r = random.nextInt(255);
+        final int g = random.nextInt(255);
+        final int b = random.nextInt(255);
+        return new Color(r, g, b);
+    }
+    
+    @Override
+    protected void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2d = (Graphics2D) theGraphics;
+        final int height = getHeight();
+        final int width = getWidth();
+        //might not need
+        final int heightScale = height / 20;
+        final int widthScale = width / 10;
+        g2d.setStroke(new BasicStroke(1));
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                             RenderingHints.VALUE_ANTIALIAS_ON);
+       
+        if (myGameStatus) {
+         //TODO
+        }
+        
+        
+        if (myGrid) {
+            //Horizontal Lines
+            for (int i = 0; i < height; i += PIECE_SIZE) {
+                g2d.drawLine(0, i, width, i);
+            }
+            //Vertical Lines
+            for (int i = 0; i < width; i += PIECE_SIZE) {
+                g2d.drawLine(i, 0, i, height);
+            }      
+        }
+        repaint();
+    }
+    
+    /**
+     * Setter for game status.
+     * @param theBool Status of game.
+     */
+    void setStatus(final Boolean theBool) {
+        myGameStatus = theBool;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public void update(final Observable theObv, final Object theObject) {
+        if (theObject instanceof List<?>) {
+            myBlockList = (ArrayList<Block[]>) theObject;
+            for (Block[] b : myBlockList) {
+                //System.out.println(Arrays.deepToString(b));
+            }
+        }
+        
+        if (theObject instanceof Boolean) {
+            myGameStatus = (Boolean) theObject;
+        }
+        
+    }
+}
+
+

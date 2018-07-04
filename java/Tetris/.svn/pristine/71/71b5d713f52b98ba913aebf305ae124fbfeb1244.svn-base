@@ -1,0 +1,450 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+
+/**
+ * 
+ * Panel that shows next piece in line.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class KeybindsInfo extends JPanel {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = 168426035370641970L;
+    /** Dimension of panel. */
+    private static final Dimension PANE_SIZE = new Dimension(200, 200);
+    /** Dimension of dialog. */
+    private static final Dimension DIAG_SIZE = new Dimension(350, 500);
+    /** Dimensions of text box. */
+    private static final Dimension TEXT_DIM = new Dimension(10, 15);
+    /** Dimensions of text box. */
+    private static final Dimension BUT_DIM = new Dimension(70, 80);
+    /** Action name. */
+    private static final String MOVE_LEFT = "Left";
+    /** Action name. */
+    private static final String MOVE_RIGHT = "Right";
+    /** Action name. */
+    private static final String MOVE_ROTATE = "Rotate";
+    /** Action name. */
+    private static final String MOVE_DOWN = "Down";
+    /** Action name. */
+    private static final String MOVE_DROP = "Drop";
+    /** Escape character for keybinds. */
+    private static final String ESC = "Escape";
+    /** Backscape character for keybinds. */
+    private static final String BS = "Backspace";
+    /**Font size. */
+    private static final int FONT_SIZE = 14;
+    /** Default font. */
+    private static final Font DEF_FONT = new Font("Comic Sans", Font.PLAIN, FONT_SIZE);
+    /** New Line. */
+    private static final String NEW_LINE = "\n";
+    /** Text box. */
+    private JTextArea myText;
+    /** Diag Frame.*/
+    private JFrame myDiagFrame;
+    /** Diag Panel. */
+    private JPanel myDiagPane;
+    /** Diag Panel. */
+    private JPanel myDiagBotPane;
+    /** Diag Panel. */
+    private JPanel myDiagTopPane;
+    /**String array for binds. */
+    private ArrayList<String> myLeftBinds;
+    /**String array for binds. */
+    private ArrayList<String> myRightBinds;
+    /**String array for binds. */
+    private ArrayList<String> myRotateBinds;
+    /**String array for binds. */
+    private ArrayList<String> myDownBinds;
+    /**String array for binds. */
+    private ArrayList<String> myDropBinds;
+    /**Boolean of change status. */
+    private boolean myChange;
+    /**Key Bind Change Button. */
+    private JButton myLeftButton;
+    /**Key Bind Change Button. */
+    private JButton myRightButton;
+    /**Key Bind Change Button. */
+    private JButton myRotateButton;
+    /**Key Bind Change Button. */
+    private JButton myDownButton;
+    /**Key Bind Change Button. */
+    private JButton myDropButton;
+    /**Key Listener.*/
+    private KeybindListener myLeftListener;
+    /**Key Listener.*/
+    private KeybindListener myRightListener;
+    /**Key Listener.*/
+    private KeybindListener myRotateListener;
+    /**Key Listener.*/
+    private KeybindListener myDownListener;
+    /**Key Listener.*/
+    private KeybindListener myDropListener;
+    /**Text Area. */
+    private JTextArea myTextArea;
+    /** Text box to show current keybinds. */
+    private JTextArea myCurrentBindTextArea;
+    /** String Builder. */
+    private StringBuilder myStringBuilder;
+    
+    /**
+     * Constructor.
+     */
+    public KeybindsInfo() {
+        super();
+        defaultBinds();
+        setBackground(Color.GRAY);
+        setPreferredSize(PANE_SIZE);
+        this.setLayout(new BorderLayout());
+        setupKeybindInfo();
+        setupChangeButton();
+        myChange = false;
+    }
+    
+    /**
+     * Gets binds in a list.
+     * @return List of binds String[]
+     */
+    protected Map<String, ArrayList<String>> getBinds() {
+        final Map<String, ArrayList<String>> result = new HashMap<String, ArrayList<String>>();
+        result.put(MOVE_LEFT, myLeftBinds);
+        result.put(MOVE_RIGHT, myRightBinds);
+        result.put(MOVE_ROTATE, myRotateBinds);
+        result.put(MOVE_DOWN, myDownBinds);
+        result.put(MOVE_DROP, myDropBinds);
+        return result;
+    }
+    /**
+     * Sets default binds.
+     */
+    private void defaultBinds() {
+        //MOVE_LEFT
+        myLeftBinds = new ArrayList<String>();
+        myLeftBinds.add("A");
+        myLeftBinds.add("a");
+        myLeftBinds.add(MOVE_LEFT);
+        //MOVE_RIGHT
+        myRightBinds = new ArrayList<String>();
+        myRightBinds.add("D");
+        myRightBinds.add("d");
+        myRightBinds.add(MOVE_RIGHT);
+        //ROTATE
+        myRotateBinds = new ArrayList<String>();
+        myRotateBinds.add("W");
+        myRotateBinds.add("w");
+        myRotateBinds.add("Up");
+        //MOVE DOWN
+        myDownBinds = new ArrayList<String>();
+        myDownBinds.add("S");
+        myDownBinds.add("s");
+        myDownBinds.add(MOVE_DOWN);
+        //DROP
+        myDropBinds = new ArrayList<String>();
+        myDropBinds.add("Space");
+    }
+    /**
+     * Returns if changed or not.
+     * @return if changed true, false otherwise.
+     */
+    protected boolean isChanged() {
+        return myChange;
+    }
+    
+    /**
+     * Opens dialog to change keybindings.
+     */
+    public void openDialog() {
+        //Setup Layout
+        myDiagFrame = new JFrame();
+        myDiagFrame.setTitle("Keybind Configuration");
+        myDiagFrame.setVisible(true);
+        myDiagFrame.setResizable(true);
+        myDiagFrame.setLocationRelativeTo(null);
+        myDiagPane = new JPanel(new BorderLayout());
+        myDiagFrame.add(myDiagPane);
+        myDiagPane.setPreferredSize(DIAG_SIZE);
+        myDiagPane.setBackground(Color.GRAY);
+        //Setup key listerners
+        setupKeyButtonChanger();
+        //Setup Layout
+        myDiagBotPane = new JPanel(new GridLayout(0, 1, 1, 1));
+        myDiagBotPane.setBackground(Color.GRAY);
+        myDiagPane.add(myDiagBotPane, BorderLayout.SOUTH);
+        myDiagTopPane = new JPanel(new GridLayout(0, 1, 1, 1));
+        myDiagPane.add(myDiagTopPane, BorderLayout.CENTER);
+        myDiagTopPane.setBackground(Color.GRAY);
+        //Add buttons
+        myDiagBotPane.add(myLeftButton);
+        myDiagBotPane.add(myRightButton);
+        myDiagBotPane.add(myRotateButton);
+        myDiagBotPane.add(myDownButton);
+        myDiagBotPane.add(myDropButton);
+        setupTextBox();
+        setupTextFieldDisplay();
+        myDiagTopPane.add(myTextArea, BorderLayout.NORTH);
+        myDiagTopPane.add(myCurrentBindTextArea, BorderLayout.CENTER);
+        //Pack
+        myDiagFrame.pack();
+    }
+    
+    /**
+     * Setups display information for changing keybinds.
+     */
+    private void setupTextBox() {
+        myTextArea = new JTextArea();
+        myTextArea.setBackground(Color.BLACK);
+        myTextArea.setForeground(Color.RED);
+        myTextArea.setLineWrap(true);
+        myTextArea.setEditable(false);
+        myTextArea.setFont(DEF_FONT);
+        final StringBuilder s = new StringBuilder();
+        s.append("To change your keybinds simply press the control you want ");
+        s.append("to swap and press the keys you want to set.\n\tPress ESCAPE to stop.");
+        s.append("\n\tPress BACKSPACE to clear all keybinds \n\tfor current selected key.");
+        myTextArea.setText(s.toString());
+    }
+    
+    /**
+     * Setups the text field to display current keybinds.
+     */
+    private void setupTextFieldDisplay() {
+        myCurrentBindTextArea = new JTextArea();
+        myCurrentBindTextArea.setEditable(false);
+        myCurrentBindTextArea.setBackground(Color.GRAY);
+        myCurrentBindTextArea.setForeground(Color.BLACK);
+        myCurrentBindTextArea.setLineWrap(true);
+        refreshKeybindText();
+    }
+    
+    /**
+     * Refreshes keybind list for display.
+     */
+    private void refreshKeybindText() {
+        myStringBuilder = new StringBuilder();
+        myStringBuilder.append("Current Binds:\n");
+        myStringBuilder.append("Move Left: " + myLeftBinds + NEW_LINE);
+        myStringBuilder.append("Move Right: " + myRightBinds + NEW_LINE);
+        myStringBuilder.append("Rotate: " + myRotateBinds + NEW_LINE);
+        myStringBuilder.append("Move Down: " + myDownBinds + NEW_LINE);
+        myStringBuilder.append("Drop: " + myDropBinds + NEW_LINE);
+        
+        myCurrentBindTextArea.setText(myStringBuilder.toString());
+    }
+    /**
+     * Setups buttons to get key events from user.
+     */
+    private void setupKeyButtonChanger() {
+        //MOVE_LEFT BINDS
+        myLeftListener = new KeybindListener();
+        myLeftButton = new JButton("Move Left");
+        myLeftButton.addActionListener(e -> {
+            myLeftButton.addKeyListener(myLeftListener);
+        });
+        //MOVE_RIGHT BINDS
+        myRightListener = new KeybindListener();
+        myRightButton = new JButton("Move Right");
+        myRightButton.addActionListener(e -> {
+            myRightButton.addKeyListener(myRightListener);
+        });
+        //ROTATE BINDS
+        myRotateListener = new KeybindListener();
+        myRotateButton = new JButton("Rotate ");
+        myRotateButton.addActionListener(e -> {
+            myRotateButton.addKeyListener(myRotateListener);
+        });
+        //MOVE DOWN BINDS
+        myDownListener = new KeybindListener();
+        myDownButton = new JButton("Move Down");
+        myDownButton.addActionListener(e -> {
+            myDownButton.addKeyListener(myDownListener);
+        });
+        //DROP BINDS
+        myDropListener = new KeybindListener();
+        myDropButton = new JButton("Drop "); 
+        myDropButton.addActionListener(e -> {
+            myDropButton.addKeyListener(myDropListener); 
+        });
+    }
+    /**
+     * Sets changed to false.
+    */
+    protected void setChanged() {
+        myChange = false;
+    }
+    
+    /**
+     * Sets the text inside box.
+     * @param theString String to set.
+     */
+    public void setText(final String theString) {
+        myText.setText(theString);
+    }
+    
+    /**
+     * Setups change button for keybindings.
+     */
+    private void setupChangeButton() {
+        final JButton button = new JButton("Config");
+        final JPanel flowPanel = new JPanel(new FlowLayout());
+        button.setSize(BUT_DIM);
+        button.addActionListener(e -> {
+            openDialog();
+            myChange = true;
+        });
+        flowPanel.setBackground(Color.GRAY);
+        this.add(flowPanel, BorderLayout.CENTER);
+        flowPanel.add(button);
+    }
+
+    /**
+     * Displays information about keybinds.
+     */
+    private void setupKeybindInfo() {
+        myText = new JTextArea(TEXT_DIM.width, TEXT_DIM.height);
+        myText.setEditable(false);
+        myText.setBackground(Color.GRAY);
+        myText.setForeground(Color.BLACK);
+        myText.setFont(DEF_FONT);
+        this.add(myText, BorderLayout.WEST);
+
+    }
+    
+    /**
+     * Removes all duplicates from bindings by adding them to a hash set,
+     * then clearing list, and readding the set to list.
+     */
+    private void removeDupes() {
+        final Set<String> leftSet = new HashSet<String>();
+        leftSet.addAll(myLeftBinds);
+        myLeftBinds.clear();
+        myLeftBinds.addAll(leftSet);
+        
+        final Set<String> rightSet = new HashSet<String>();
+        rightSet.addAll(myRightBinds);
+        myRightBinds.clear();
+        myRightBinds.addAll(rightSet);
+        
+        final Set<String> rotateSet = new HashSet<String>();
+        rotateSet.addAll(myRotateBinds);
+        myRotateBinds.clear();
+        myRotateBinds.addAll(rotateSet);
+        
+        final Set<String> downSet = new HashSet<String>();
+        downSet.addAll(myDownBinds);
+        myDownBinds.clear();
+        myDownBinds.addAll(downSet);
+        
+        final Set<String> dropSet = new HashSet<String>();
+        dropSet.addAll(myDropBinds);
+        myDropBinds.clear();
+        myDropBinds.addAll(dropSet);
+    }
+
+    /**
+     * 
+     * Key listener for changing keybinds.
+     * @author Jacob Reed
+     * @version May 23, 2017
+     *
+     */
+    private class KeybindListener implements KeyListener {
+
+        @Override
+        public void keyPressed(final KeyEvent theE) {
+            if (theE.getSource() == myLeftButton) {
+                if (ESC.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myLeftButton.removeKeyListener(myLeftListener);
+                } else if (BS.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myLeftBinds.clear();
+                    refreshKeybindText();
+                } else {
+                    myLeftBinds.add(KeyEvent.getKeyText(theE.getKeyCode()));
+                    removeDupes();
+                    refreshKeybindText();
+                }
+            } else if (theE.getSource() == myRightButton) {
+                if (ESC.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myRightButton.removeKeyListener(myRightListener);
+                } else if (BS.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myRightBinds.clear();
+                    refreshKeybindText();
+                } else {
+                    myRightBinds.add(KeyEvent.getKeyText(theE.getKeyCode()));
+                    removeDupes();
+                    refreshKeybindText();
+                }
+            } else if (theE.getSource() == myRotateButton) {
+                if (ESC.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myRotateButton.removeKeyListener(myRotateListener);
+                } else if (BS.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myRotateBinds.clear();
+                    refreshKeybindText();
+                } else {
+                    myRotateBinds.add(KeyEvent.getKeyText(theE.getKeyCode()));
+                    removeDupes();
+                    refreshKeybindText();
+                }
+            }    
+        }
+        
+        
+        
+        @Override
+        public void keyReleased(final KeyEvent theE) {
+            if (theE.getSource() == myDownButton) {
+                if (ESC.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myDownButton.removeKeyListener(myDownListener);
+                } else if (BS.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myDownBinds.clear();
+                    refreshKeybindText();
+                } else {
+                    myDownBinds.add(KeyEvent.getKeyText(theE.getKeyCode()));
+                    removeDupes();
+                    refreshKeybindText();
+                }
+            } else if (theE.getSource() == myDropButton) {
+                if (ESC.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myDropButton.removeKeyListener(myDropListener);
+                } else if (BS.equals(KeyEvent.getKeyText(theE.getKeyCode()))) {
+                    myDropBinds.clear();
+                    removeDupes();
+                    refreshKeybindText();
+                } else {
+                    myDropBinds.add(KeyEvent.getKeyText(theE.getKeyCode()));
+                    removeDupes();
+                    refreshKeybindText();
+                }
+            }
+            
+        }
+
+        @Override
+        public void keyTyped(final KeyEvent theE) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+    }
+}

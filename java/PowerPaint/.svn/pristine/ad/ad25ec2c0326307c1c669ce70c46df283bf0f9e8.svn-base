@@ -1,0 +1,37 @@
+/**
+ * PowerPaint
+ * Assignment 5
+ * Spring 2017 TCSS 305
+ */
+package tools;
+
+import java.awt.Shape;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
+/**
+ * Square Tool.
+ * @author Jacob Reed
+ * @version Apr 28, 2017
+ *
+ */
+public class SquareTool extends AbstractTool {
+    /**
+     * Constructor.
+     * @param theStart Start point.
+     * @param theEnd End point.
+     */
+    public SquareTool(final Point2D theStart, final Point2D theEnd) {
+        super(theStart, theEnd);
+    }
+
+    @Override
+    public Shape getShape() {
+        final Rectangle2D.Double result = new Rectangle2D.Double();
+        result.setFrameFromDiagonal(getStart(), getEnd());
+        //FIX this is causing square to move when going opposite direction  
+        result.setRect(result.getX(), result.getY(),
+                       result.getHeight(), result.getHeight());
+        return result;
+    }
+}

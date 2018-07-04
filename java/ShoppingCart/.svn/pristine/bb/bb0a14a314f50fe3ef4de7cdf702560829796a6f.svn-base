@@ -1,0 +1,1 @@
+I was unable to get full coverage on Item.java because I used private setters and getters, so I tested those setters via the constructors but EclEmma shows my coverage only going up to 98% for Item.java.

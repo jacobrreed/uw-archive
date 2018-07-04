@@ -1,0 +1,20 @@
+1920	1930
+-----	-----
+Mary 1 	
+Ann 2    5
+...
+.. 100
+Fredericka  __  10
+
+next year..
+search for duplicates in preexisting array
+-if you dont find it, append it to the end of array
+-if you do find it append new number for year
+
+When you first create arrays for int, initiliaze them all to -1 (unranked)
+To read in names, read them as chars, stopping at commas, then create the string yourself.
+To read in int, use %d
+There will still be an EOF for next name, so first scanf(" %c") then after use "%c". or use discardToEOL() after int.
+
+while (*string) {
+} //Will take you to '\0'

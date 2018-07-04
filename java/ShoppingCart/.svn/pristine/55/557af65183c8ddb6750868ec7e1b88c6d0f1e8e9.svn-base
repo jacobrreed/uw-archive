@@ -1,0 +1,68 @@
+/*
+ * TCSS 305 - Spring 2017
+ * Assignment 2 - Shopping Cart
+ */
+package model;
+
+import java.math.BigDecimal;
+
+/**
+ * 
+ * Shopping Cart.
+ * @author Jacob Reed
+ * @version Apr 7, 2017
+ *
+ */
+public class ShoppingCart {
+
+    /**
+     * Constructor that creates an empty shopping cart.
+     */
+    public ShoppingCart() {
+
+    }
+
+    /**
+     * Adds an order to the shopping cart, replacing any previous,
+     * order for an equivalent item with the new order.
+     * @param theOrder ItemOrder
+     */
+    public void add(final ItemOrder theOrder) {
+        
+    }
+
+    /**
+     * Sets whether or not customer for this shopping cart has a store membership.
+     * @param theMembership True if member, false otherwise.
+     */
+    public void setMembership(final boolean theMembership) {
+        
+    }
+
+    /**
+     * Generates total cost of this shopping cart.
+     * @return Returns total cost using a scale of 2 (ROUND_HALF_EVEN)
+     */
+    public BigDecimal calculateTotal() {
+
+        return null;
+    }
+    
+    /**
+     * Removes all orders from cart.
+     */
+    public void clear() {
+        
+    }
+
+    @Override
+    /**
+     * Returns a String representation of this ShoppingCart.
+     * @return String for shopping cart
+     */
+    public String toString() {
+        
+        return null;
+    }
+
+}

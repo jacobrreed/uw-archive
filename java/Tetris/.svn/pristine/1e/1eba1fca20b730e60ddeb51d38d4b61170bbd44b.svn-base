@@ -1,0 +1,403 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
+import javax.swing.Timer;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import model.Board;
+
+
+/**
+ * 
+ * Tetris GUI.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class TetrisGUI extends JPanel implements Observer {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = -4763324919600478629L;
+    /**Default window size. */
+    private static final Dimension WINDOW_DIM = new Dimension(600, 654);
+    /** Timer Init default. */
+    private static final int TIMER_INIT = 1000;
+    /** Action name. */
+    private static final String MOVE_LEFT = "Left";
+    /** Action name. */
+    private static final String MOVE_RIGHT = "Right";
+    /** Action name. */
+    private static final String MOVE_ROTATE = "Rotate";
+    /** Action name. */
+    private static final String MOVE_DOWN = "Down";
+    /** Action name. */
+    private static final String MOVE_DROP = "Drop";
+    /** String array for keybinds. */
+    private String[] myLefts;
+    /** String array for keybinds. */
+    private String[] myRights;
+    /** String array for keybinds. */
+    private String[] myDowns;
+    /** String array for keybinds. */
+    private String[] myRotates;
+    /** String array for keybinds. */
+    private String[] myDrops;
+    /** Frame.*/
+    private JFrame myFrame;
+    /**Right Side Panel. */
+    private JPanel myRightPanel;
+    /**Right Side Bottom Panel. */
+    private JPanel myRightBottomPanel;
+    /**Right Side Bottom InnerPanel. */
+    private JPanel myRightBottomInnerPanel;
+    /**Right Side Top Panel. */
+    private JPanel myRightTopPanel;
+    /**Game Panel. */
+    private GamePanel myGamePanel;
+    /** Next piece panel. */
+    private NextPiecePanel myNextPanel;
+    /** Information panel. */
+    private KeybindsInfo myInfoPanel;
+    /** Configuration Panel. */
+    private GameInfo myConfigPanel;
+    /** Menu Bar. */
+    private JMenuBar myMenuBar;
+    /**Score info. */
+    private ScoreInfo myScoreInfo;
+    /** Board. */
+    private Board myBoard;
+    /** Game Status, wrapper because of object return from observable. */
+    private Boolean myGameStatus;
+    /** Timer. */
+    private Timer myTimer;
+    /** Keybind List. */
+    private Map<String, String[]> myKeybindMap;
+    /** New game. */
+    private JMenuItem myNewGameItem;
+    
+    /**
+     * Constructor.
+     */
+    public TetrisGUI() {
+        myFrame = new JFrame();
+        myFrame.setLayout(new BorderLayout());
+        myGameStatus = false;       
+    }
+    
+    /**
+     * Sets Keybinds for game.
+     * @param theLefts Array of string
+     * @param theRights Array of string
+     * @param theRotates Array of string
+     * @param theDowns Array of string
+     * @param theDrops String of drop.
+     */ 
+    protected void setKeybinds(final String[] theLefts, final String[] theRights,
+                             final String[] theRotates, final String[] theDowns,
+                             final String[] theDrops) {
+        //Focus
+        final JRootPane rootPane = myFrame.getRootPane();
+        final int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        final InputMap imap = rootPane.getInputMap(mapName);
+        //Add keystroke to map
+        //LEFT
+        for (String s : theLefts) {
+            imap.put(KeyStroke.getKeyStroke(s), MOVE_LEFT);
+        }
+        //RIGHT
+        for (String s : theRights) {
+            imap.put(KeyStroke.getKeyStroke(s), MOVE_RIGHT);
+        }
+        //ROTATE
+        for (String s : theRotates) {
+            imap.put(KeyStroke.getKeyStroke(s), MOVE_ROTATE);
+        }
+        //DOWN
+        for (String s : theDowns) {
+            imap.put(KeyStroke.getKeyStroke(s), MOVE_DOWN);
+        }
+        //DROP
+        for (String s : theDrops) {
+            imap.put(KeyStroke.getKeyStroke(s), MOVE_DROP);
+        }
+        
+        //Get action map for panel
+        final ActionMap amap = rootPane.getActionMap();
+        
+        //Put command
+        amap.put(MOVE_LEFT, new AbstractAction() {
+            /**Generated SUID. */
+            private static final long serialVersionUID = -1285134797478274697L;
+            @Override
+            public void actionPerformed(final ActionEvent theAction) {
+                if (myGameStatus) {
+                    myBoard.left(); 
+                    System.out.println("L");
+                }
+            } });
+        
+        amap.put(MOVE_RIGHT, new AbstractAction() {
+            /**Generated SUID. */
+            private static final long serialVersionUID = 2147959870417233369L;
+            @Override
+            public void actionPerformed(final ActionEvent theAction) {
+                if (myGameStatus) {
+                    myBoard.right();  
+                    System.out.println("R");
+                }
+            } });
+        
+        amap.put(MOVE_ROTATE, new AbstractAction() {
+            /**Generated SUID. */
+            private static final long serialVersionUID = -2520335842212904459L;
+            @Override
+            public void actionPerformed(final ActionEvent theAction) {
+                if (myGameStatus) {
+                    myBoard.rotateCW(); 
+                    System.out.println("Ro");
+                }
+            } });
+        
+        amap.put(MOVE_DOWN, new AbstractAction() {
+            //**Generated SUID. */
+            private static final long serialVersionUID = -6061782707376461597L;
+            @Override
+            public void actionPerformed(final ActionEvent theAction) {
+                if (myGameStatus) {
+                    myBoard.down();
+                    System.out.println("D");
+                }
+                } });
+        
+        amap.put(MOVE_DROP, new AbstractAction() {
+            /**Generated SUID. */
+            private static final long serialVersionUID = 8429321738785310841L;
+            @Override
+            public void actionPerformed(final ActionEvent theAction) {
+                if (myGameStatus) {
+                    myBoard.drop();
+                    System.out.println("Dr");
+                }
+            } });
+        
+        //Get focus
+        this.requestFocus();
+    }
+    
+    /**
+     * Setups config panel.
+     */
+    private void setupGameInfoPanel() {
+        myConfigPanel = new GameInfo();
+        final Border blackline = BorderFactory.createLineBorder(Color.BLACK);
+        final TitledBorder title = BorderFactory.createTitledBorder(blackline, 
+                        "Game Information");
+        myConfigPanel.setBorder(title);
+        myRightBottomInnerPanel.add(myConfigPanel, BorderLayout.NORTH);
+    }
+    
+    /**
+     * Setups board.
+     */
+    private void setupGamePanel() {
+        myGamePanel = new GamePanel();
+        myFrame.add(myGamePanel, BorderLayout.WEST);
+    }
+    
+    /**
+     * Setups info panel.
+     */
+    private void setupKeybindPanel() {
+        final Border blackline = BorderFactory.createLineBorder(Color.BLACK);
+        final TitledBorder title = BorderFactory.createTitledBorder(blackline, 
+                                                                    "Keybinds");
+        myInfoPanel.setBorder(title);
+        myRightBottomPanel.add(myInfoPanel, BorderLayout.NORTH);
+       
+    }
+    /**
+     * Setups information inside keybind info.
+     */
+    private void keybindInfoText() {
+      //Generate keybind text.
+        final StringBuilder infoText = new StringBuilder();
+        for (String s : myKeybindMap.keySet()) {
+            infoText.append(s + ": ");
+            for (String x : myKeybindMap.get(s)) {
+                infoText.append("[" + x + "] ");
+            }
+            infoText.append("\n");
+        }
+        myInfoPanel.setText(infoText.toString());
+    }
+    
+    /**
+     * Setups layout.
+     */
+    private void setupLayout() {
+        myRightPanel = new JPanel();
+        myRightPanel.setLayout(new BorderLayout());
+        myRightTopPanel = new JPanel();
+        myRightTopPanel.setLayout(new BorderLayout());
+        myRightBottomPanel = new JPanel();
+        myRightBottomPanel.setLayout(new BorderLayout());
+        myRightBottomInnerPanel = new JPanel();
+        myRightBottomInnerPanel.setLayout(new BorderLayout());
+        myFrame.setTitle("Tetris");
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.add(myRightPanel, BorderLayout.CENTER);
+        myFrame.setPreferredSize(WINDOW_DIM);
+        myRightPanel.add(myRightTopPanel, BorderLayout.NORTH);
+        myRightPanel.add(myRightBottomPanel, BorderLayout.CENTER);
+        myRightBottomPanel.add(myRightBottomInnerPanel, BorderLayout.SOUTH);
+        setupGamePanel();
+        setupNextPanel();
+        //setupKeybindPanel();
+        setupGameInfoPanel();
+        setupMenuBar();
+        setupScoreInfo();
+        myFrame.pack();
+        myFrame.setResizable(false);
+        myFrame.setVisible(true);
+    }
+    
+    /**
+     * Setups menu bar.
+     */
+    private void setupMenuBar() {
+        //Main menu
+        myMenuBar = new JMenuBar();
+        //File
+        final JMenu fileMenu = new JMenu("File");
+        myMenuBar.add(fileMenu);
+        //New Game
+        myNewGameItem = new JMenuItem("New Game");
+        fileMenu.add(myNewGameItem);
+        myNewGameItem.addActionListener(e -> {
+            myBoard.newGame();
+            myTimer.start();
+            myGameStatus = true;
+            myGamePanel.setStatus(myGameStatus);
+            myNextPanel.setStatus(myGameStatus);
+        });
+        
+        myFrame.add(myMenuBar, BorderLayout.NORTH);
+    }
+    
+    /**
+     * Setups the next piece panel.
+     */
+    private void setupNextPanel() {
+        myNextPanel = new NextPiecePanel();
+        final Border blackline = BorderFactory.createLineBorder(Color.BLACK);
+        final TitledBorder title = BorderFactory.createTitledBorder(blackline, 
+                                                                    "Next Piece");
+        myNextPanel.setBorder(title);
+        myRightTopPanel.add(myNextPanel, BorderLayout.CENTER);
+    }
+    
+    /**
+     * Setups score info panel.
+     */
+    private void setupScoreInfo() {
+        myScoreInfo = new ScoreInfo();
+        final Border blackline = BorderFactory.createLineBorder(Color.BLACK);
+        final TitledBorder title = BorderFactory.createTitledBorder(blackline, 
+                        "Score");
+        myScoreInfo.setBorder(title);
+        myRightBottomInnerPanel.add(myScoreInfo, BorderLayout.SOUTH);
+    }
+    
+    /**
+     * Starts GUI.
+     */
+    public void start() {
+        //Timer init.
+        myTimer = new Timer(TIMER_INIT, new TimerListener());
+        //Layout
+        setupLayout();
+        //KEYBIND DEFAULTS
+        myInfoPanel = new KeybindsInfo();
+        setupKeybindPanel();
+        myKeybindMap = myInfoPanel.getBinds();
+        initKeybindSet(myKeybindMap);
+        setKeybinds(myLefts, myRights, myRotates,
+                    myDowns, myDrops);
+        keybindInfoText();
+        //Observers
+        myBoard = new Board();
+        myBoard.addObserver(myGamePanel);
+        myBoard.addObserver(myInfoPanel);
+        myBoard.addObserver(myConfigPanel);
+        myBoard.addObserver(myScoreInfo);
+        myBoard.addObserver(myNextPanel);
+        myBoard.addObserver(this);
+    }
+    
+    /**
+     * Setups init keybind set.
+     * @param theMap Map.
+     */
+    private void initKeybindSet(final Map<String, String[]> theMap) {
+        myLefts = theMap.get(MOVE_LEFT);
+        myRights = theMap.get(MOVE_RIGHT);
+        myRotates = theMap.get(MOVE_ROTATE);
+        myDowns = theMap.get(MOVE_DOWN);
+        myDrops = theMap.get(MOVE_DROP);
+    }
+    
+    @Override
+    public void update(final Observable theObservable, final Object theObject) {
+        //If boolean return (Game status)
+        if (theObject instanceof Boolean) {
+            myGameStatus = (Boolean) theObject;
+            JOptionPane.showMessageDialog(this, "GAME OVER!",
+                                          "GAME OVER", JOptionPane.ERROR_MESSAGE);
+            myTimer.stop();
+        }
+    }
+    
+
+    /**
+     * 
+     * Inner class for timer listener.
+     * @author Jacob Reed
+     * @version May 19, 2017
+     *
+     */
+    private class TimerListener implements ActionListener {
+        @Override
+        public void actionPerformed(final ActionEvent theEvent) {
+            myBoard.step();
+            if (myInfoPanel.isChanged()) {
+                myKeybindMap = myInfoPanel.getBinds();
+                keybindInfoText();
+                initKeybindSet(myKeybindMap);
+                setKeybinds(myLefts, myRights, myRotates,
+                            myDowns, myDrops);
+            }
+        }
+    }
+}

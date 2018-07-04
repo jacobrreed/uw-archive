@@ -1,0 +1,316 @@
+/**
+ * PowerPaint
+ * Assignment 5
+ * Spring 2017 TCSS 305
+ */
+package gui;
+import action.CircleAction;
+import action.EllipseAction;
+import action.EraserAction;
+import action.LineAction;
+import action.PencilAction;
+import action.RectangleAction;
+import action.SquareAction;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSlider;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+
+/**
+ * 
+ * Main GUI.
+ * @author Jacob Reed
+ * @version Apr 28, 2017
+ *
+ */
+public class PowerPaintGUI extends JPanel {
+    
+    /** Generated SUID. */
+    private static final long serialVersionUID = 3904434817686336323L;
+    /** Default paint panel size. */
+    private static final Dimension PAINT_PANEL_SIZE = new Dimension(400, 400);
+    /** Thickness max. */
+    private static final int THICK_MAX = 20;
+    /**Thickness interval. */
+    private static final int THICK_INT = 5;
+    /**UW PURPLE. */
+    private static final Color UW_PURP = new Color(51, 0, 111, 100);
+    /** UW GOLD. */
+    private static final Color UW_GOLD = new Color(145, 123, 76, 100);
+    /** Main frame. */
+    private JFrame myFrame;
+    /** Tool bar. */
+    private PaintToolbar myToolbar;
+    /** Temp drawing panel. */
+    private PaintPanel myPaintPanel;
+    /** Menu Bar. */
+    private final JMenuBar myMenuBar;
+    /** Thickness Slider. */
+    private JSlider myThickSlider;
+    /** File Menu. */
+    private JMenu myFileMenu;
+    /** Options Menu. */
+    private JMenu myOptionsMenu;
+    /** Tools Menu. */
+    private JMenu myToolsMenu;
+    /** Help Menu. */
+    private JMenu myHelpMenu;
+    /**Primary color icon. */
+    private final ColorIcon myPrimColorIcon;
+    /** Secondary color icon. */
+    private final ColorIcon mySecColorIcon;
+
+ 
+
+    
+
+    
+    /**
+     * Constructor.
+     */
+    public PowerPaintGUI() {
+        myFrame = new JFrame();
+        myFrame.setLayout(new BorderLayout());
+        myMenuBar = new JMenuBar();
+        myPrimColorIcon = new ColorIcon(UW_PURP);
+        mySecColorIcon = new ColorIcon(UW_GOLD);
+        setupThickSlider();
+    }
+    
+    /**
+     * Runs main GUI upon parent call.
+     */
+    public void start() {
+        //Main Setup
+        myFrame.setTitle("PowerPaint");
+        myFrame.setResizable(true);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        final ImageIcon windowIcon = new ImageIcon("images/window.png");
+        myFrame.setIconImage(windowIcon.getImage());
+        
+        //Metal Look and Feel
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+        } catch (final ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (final InstantiationException e) {
+            e.printStackTrace();
+        } catch (final IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (final UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+        
+        //Menu Bar
+        setupMenuBar();
+        myFrame.add(myMenuBar, BorderLayout.NORTH);
+        //Drawing Panel
+        setupDrawingPanel();
+        setupToolBar();
+        //Pack and show
+        myFrame.pack();
+        myFrame.setVisible(true);
+    }
+    
+    /**
+     * Setups tool bar.
+     */
+    private void setupToolBar() {
+        myToolbar = new PaintToolbar();
+        myFrame.add(myToolbar, BorderLayout.SOUTH);
+        final List<Action> toolActions = new ArrayList<Action>();
+        toolActions.add(new PencilAction(myPaintPanel));
+        toolActions.add(new LineAction(myPaintPanel));
+        toolActions.add(new RectangleAction(myPaintPanel));
+        toolActions.add(new SquareAction(myPaintPanel));
+        toolActions.add(new EllipseAction(myPaintPanel));
+        toolActions.add(new CircleAction(myPaintPanel));
+        toolActions.add(new EraserAction(myPaintPanel));
+        
+        for (final Action x : toolActions) {
+            createToolMenuButton(x);
+            myToolbar.createButton(x);
+        }
+        
+    }
+    
+    /**
+     * Creates button based on action.
+     * @param theAction action of button.
+     */
+    private void createToolMenuButton(final Action theAction) {
+        final JRadioButtonMenuItem resultButton = new JRadioButtonMenuItem(theAction);
+        myToolsMenu.setMnemonic(KeyEvent.VK_T);
+        myToolsMenu.add(resultButton);
+    }
+    /**
+     * Setups File menu bar.
+     */
+    private void setupMenuBarFile() {
+        //FILE
+        myFileMenu = new JMenu("File");
+        myFileMenu.setMnemonic(KeyEvent.VK_F);
+        //---------Clear
+        final JMenuItem clearItem = new JMenuItem("Clear");
+        clearItem.setMnemonic(KeyEvent.VK_C);
+        clearItem.addActionListener(e -> {
+            myPaintPanel.clearPanel(true);
+        });
+        myFileMenu.add(clearItem);
+        myFileMenu.addSeparator();
+        //---------Quit
+        final JMenuItem quitItem = new JMenuItem("Quit");
+        quitItem.setMnemonic(KeyEvent.VK_Q);
+        quitItem.addActionListener(e -> {
+            myFrame.dispose();
+        });
+        myFileMenu.add(quitItem);
+    }
+    
+    /** 
+     * Setups menu bar.
+     */
+    private void setupMenuBar() {
+        //Setups each menu
+        setupMenuBarFile();
+        setupMenuBarOptions();
+        setupMenuBarTools();
+        setupMenuBarHelp();
+        
+        //Add all to menu bar
+        myMenuBar.add(myFileMenu);
+        myMenuBar.add(myOptionsMenu);
+        myMenuBar.add(myToolsMenu);
+        myMenuBar.add(myHelpMenu);
+    }
+    /**
+     * Setups Options Menu Bar.
+     */
+    private void setupMenuBarOptions() {
+      //OPTIONS
+        myOptionsMenu = new JMenu("Options");
+        myOptionsMenu.setMnemonic(KeyEvent.VK_O);
+        //--------Thickness
+        final JMenu thicknessMenu = new JMenu("Thickness");
+        thicknessMenu.setMnemonic(KeyEvent.VK_T);
+        myOptionsMenu.add(thicknessMenu);
+        //------------> Slider
+        thicknessMenu.add(myThickSlider);
+        myThickSlider.addChangeListener(e -> {
+            myPaintPanel.setThick(myThickSlider.getValue());
+        });
+        myOptionsMenu.addSeparator();
+        //--------Primary Color
+        primaryColorOption();
+        //--------Secondary Color
+        secondaryColorOption();
+        myOptionsMenu.addSeparator();
+        //--------Fill
+        final JCheckBox fillBox = new JCheckBox("Fill");
+        fillBox.setMnemonic(KeyEvent.VK_F);
+        myOptionsMenu.add(fillBox);
+    }
+    
+    /**
+     * Handles Primary color selection.
+     */
+    private void primaryColorOption() {
+        final JMenuItem primaryColor = new JMenuItem("Primary Color...");
+        primaryColor.setMnemonic(KeyEvent.VK_P);
+        primaryColor.setIcon(myPrimColorIcon);
+        primaryColor.addActionListener(e -> {
+            final Color result = JColorChooser.showDialog(null, "Select color", UW_PURP); 
+            myPrimColorIcon.setColor(result);
+            myPaintPanel.setColors(result, myPaintPanel.getSecColor());
+        });
+        myOptionsMenu.add(primaryColor);
+    }
+    
+    /**
+     * Handles secondary color selection.
+     */
+    private void secondaryColorOption() {
+        final JMenuItem secColor = new JMenuItem("Secondary Color...");
+        secColor.setMnemonic(KeyEvent.VK_S);
+        secColor.setIcon(mySecColorIcon);
+        secColor.addActionListener(e -> {
+            final Color result = JColorChooser.showDialog(null, "Select a color", UW_GOLD); 
+            mySecColorIcon.setColor(result);
+            myPaintPanel.setColors(myPaintPanel.getPrimColor(), result);
+        });
+        myOptionsMenu.add(secColor);
+    }
+    /**
+     * Setups Tools Menu Bar.
+     */
+    private void setupMenuBarTools() {
+        myToolsMenu = new JMenu("Tools");
+        myToolsMenu.setMnemonic(KeyEvent.VK_T);
+    }
+    
+    /**
+     * Setups Help menu bar.
+     */
+    private void setupMenuBarHelp() {
+      //HELP
+        myHelpMenu = new JMenu("Help");
+        myHelpMenu.setMnemonic(KeyEvent.VK_H);
+        //---------About
+        final JMenuItem aboutItem = new JMenuItem("About...");
+        aboutItem.setMnemonic(KeyEvent.VK_A);
+        aboutItem.addActionListener(e -> {
+            JOptionPane.showMessageDialog(myFrame,
+                                        "Jacob Reed\nSpring 2017\nTCSS 305 PowerPaint",
+                                        "About",
+                                        0, new ImageIcon("images/window.png"));
+        });
+        myHelpMenu.add(aboutItem);
+    }
+    
+    /**
+     * Setups layout via layout managers.
+     */
+    private void setupLayout() {
+        //TODO
+    }
+    
+    /**
+     * Setups drawing panel.
+     */
+    private void setupDrawingPanel() {
+        myPaintPanel = new PaintPanel();
+        myPaintPanel.setPreferredSize(PAINT_PANEL_SIZE);
+        myFrame.add(myPaintPanel, BorderLayout.CENTER);
+    }
+    
+    /**
+     * Setups thickness slider for menu.
+     */
+    private void setupThickSlider() {
+        myThickSlider = new JSlider(JSlider.HORIZONTAL, 0,
+                                    THICK_MAX, 1);
+        myThickSlider.setMajorTickSpacing(THICK_INT);
+        myThickSlider.setMinorTickSpacing(1);
+        myThickSlider.setPaintLabels(true);
+        myThickSlider.setPaintTicks(true);
+    }
+
+}

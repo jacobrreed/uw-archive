@@ -1,0 +1,70 @@
+body {
+    background-color: black;
+}
+textarea {
+  resize: none;
+  width: 295px;
+  height: 385px;
+  font-family: 'Verdana, Geneva', sans-serif;
+  font-size: 20px;
+  background-color: black;
+  color: red;
+  border: none;
+  overflow: auto;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  outline: none;
+}
+.generalStyles
+{
+  position:relative;
+  float:left;
+  background-color:#000;
+  border-radius:4px;
+  box-sizing:border-box;
+  color:#000;
+  height:100px;
+  padding:5px;
+}
+
+.container
+{
+  width:100%;
+  background-color:#000;
+}
+
+.leftPanel
+{
+  width:24%;
+  margin:0 1% 0 0;
+
+}
+
+.rightPanel
+{
+  width:24%;
+  margin:0 0 0 1%;
+  background-color:#000;
+  padding:0;
+}
+
+.middlePanel
+{
+  width:50%;
+  margin:0;
+}
+
+.topPanel
+{
+  width:100%;
+  margin:0;
+  height:385px;
+}
+
+.bottomPanel
+{
+  width:100%;
+  margin:1% 0 0 0;
+  height:385px;
+}

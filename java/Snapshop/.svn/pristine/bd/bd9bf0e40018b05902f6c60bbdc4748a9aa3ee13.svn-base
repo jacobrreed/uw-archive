@@ -1,0 +1,113 @@
+/*
+ * TCSS 305 - Assignment 4: SnapShop
+ */
+
+package gui;
+
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+/**
+ * 
+ * SnapSHopGUI.java.
+ * @author Jacob Reed
+ * @version Apr 21, 2017
+ *
+ */
+public class SnapShopGUI extends JFrame {
+    
+    /** Generates UID. */
+    private static final long serialVersionUID = -2144739668936849562L;
+    /** JPanel. */
+    private JPanel myPanel;
+    /** Holds constraints for layout manager. */
+    private GridBagConstraints myGbc = new GridBagConstraints();
+    /** Open... */
+    private String myOpenString = "Open...";
+    /** String array that holds button labels. */
+    private String[] myButtonLabels = {"Edge Detect", "Edge Highlight", "Flip Horizontal",
+                                       "Flip Vertical", "Grayscale", "Sharpen", "Soften", 
+                                       myOpenString, "Save As...", "Close Image"};;
+    /** JButton List. */
+    private List<JButton> myButtonList;
+    /** JFileChooser for opening and saving. */
+    private JFileChooser myFileChooser;
+    
+    /**
+     * Constructor.
+     */
+    public SnapShopGUI() {
+        start();
+    }
+    /**
+     * Starts GUI.
+     */
+    public void start() {
+        setTitle("TCSS 305 SnapShop"); //sets title
+        setSize(300,200); //set dimensions
+        setLocationRelativeTo(null); //opens window centered
+        //makes it so when you press X the window closes
+        setDefaultCloseOperation(EXIT_ON_CLOSE); 
+        this.setVisible(true); //make visible
+        this.pack();
+        createLayout();
+        createButtons();
+    }
+    
+    /**
+     * Setups components for window such as JPanel and layout manager.
+     */
+    private void createLayout() {
+        myPanel = new JPanel(new GridBagLayout());
+        this.add(myPanel);
+    }
+    
+    /**
+     * Setups buttons on window.
+     */
+    private void createButtons() {
+        //Linked list that stores all buttons.
+        myButtonList = new LinkedList<JButton>();
+        
+        //For loop that adds all buttons to list
+        for (int i = 0; i < myButtonLabels.length; i++) {
+            myButtonList.add(new JButton(myButtonLabels[i]));
+        }
+        
+        //For loop that adds all buttons in list to the panel
+        for (int i = 0; i < myButtonList.size(); i++) {
+            myGbc.gridx = 0;
+            myGbc.gridy = i;
+            disableButtons();
+            //myButtonList.get(i).setPreferredSize(new Dimension(100, 40));//sets button size
+            myPanel.add(myButtonList.get(i), myGbc);
+        }
+    }
+    
+    /**
+     * Disabled all buttons except for "Open...".
+     */
+    private void disableButtons() {
+        for (int i = 0; i < myButtonList.size(); i++) {
+            if (!(myButtonLabels[i].equals(myOpenString))) {
+                myButtonList.get(i).setEnabled(false);
+            }
+        }
+    }
+    
+    /**
+     * Enables all buttons.
+     */
+    private void enableButtons() {
+        for (int i = 0; i < myButtonList.size(); i++) {
+            myButtonList.get(i).setEnabled(true);
+        }
+    }
+}

@@ -1,0 +1,27 @@
+//Symbol Name		Page Address
+//----------------	------------
+//	ALGADDR                 3060
+//	BITTOG                  305D
+//	CHOICEADDR              305E
+//	CHOICEOFF               3059
+//	DECRYPT                 300A
+//	DECRYPTINNER            300E
+//	ENCRYPT                 301E
+//	ENCRYPTINNER            3022
+//	END                     3058
+//	ENTTEST                 30BA
+//	GETKEY                  3030
+//	GETMSG                  303D
+//	GETMSGLOOP              3045
+//	GETMSGLOOPINNER         3046
+//	KEYADDR                 3061
+//	KEYMSG                  3082
+//	MESSAGE                 3062
+//	MSGADDR                 305F
+//	NL                      30B9
+//	NUMBEROFF               305A
+//	PRINTINNER              3053
+//	PRINTOUT                3052
+//	PROMPT                  309E
+//	R7SAV                   305B
+//	R7SAV2                  305C

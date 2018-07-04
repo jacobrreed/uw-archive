@@ -1,0 +1,136 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JPanel;
+
+/**
+ * 
+ * Panel that shows next piece in line.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class ScoreInfo extends JPanel implements Observer {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = -904014731331910425L;
+    /** BG COLOR. */
+    private static final Color BG = new Color(114, 10, 10);
+    /** Dimension of panel. */
+    private static final Dimension PANE_SIZE = new Dimension(200, 100);
+    /** Font. */
+    private static final Font FONT = new Font("Cracked", Font.BOLD, 14);
+    /** Number of lines per level. */
+    private static final int LINES_PER_LEVEL = 5;
+    /** Score. */
+    private int myScore;
+    /** Level. */
+    private int myCurrentLevel;
+    /** Lines Cleared. */
+    private int myLinesCleared;
+    /** Lines until next level. */
+    private int myLinesToNext;
+
+    
+    /**
+     * Constructor.
+     */
+    public ScoreInfo() {
+        super();
+        setBackground(BG);
+        setPreferredSize(PANE_SIZE);
+        myScore = 0;
+        myCurrentLevel = 1;
+        myLinesCleared = 0;
+        myLinesToNext = LINES_PER_LEVEL;
+    }
+    
+    /**
+     * Getter for current level.
+     * @return int for level.
+     */
+    protected int getLevel() {
+        return myCurrentLevel;
+    }
+    
+    @Override
+    protected void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2d = (Graphics2D) theGraphics;
+        g2d.setColor(Color.BLACK);
+        g2d.setFont(FONT);
+        final int scoreX = 10;
+        final int scoreY = 25;
+        final int levelX = 10;
+        final int levelY = 45;
+        final int xMod = 170;
+        final int linesX = 10;
+        final int linesY = 65;
+        final int linesToNextY = 85;
+        final StringBuilder scoreVal = new StringBuilder();
+        scoreVal.append(myScore);
+        final StringBuilder levelVal = new StringBuilder();
+        levelVal.append(myCurrentLevel);
+        final StringBuilder linesVal = new StringBuilder();
+        linesVal.append(myLinesCleared);
+        final StringBuilder linesToNext = new StringBuilder();
+        linesToNext.append(myLinesToNext);
+        g2d.drawString("Score: ", scoreX, scoreY);
+        g2d.drawString("Level: ", levelX, levelY);
+        g2d.drawString("Lines Cleared:", linesX, linesY);
+        g2d.drawString("Lines until next:", scoreX, linesToNextY);
+        g2d.drawString(scoreVal.toString(), xMod, scoreY);
+        g2d.drawString(levelVal.toString(), xMod, levelY);
+        g2d.drawString(linesVal.toString(), xMod, linesY);
+        g2d.drawString(linesToNext.toString(), xMod, linesToNextY);
+    }
+    
+    /**
+     * Refreshes info about score and level.
+     */
+    private void refreshInfo() {
+        //LINES CLEARED / LEVEL MODIFIER
+        //FIX THIS - it is adding the cleared lines in addition to previously cleared.
+        //Check if lines cleared is divisible by 5.
+        if (myLinesCleared % LINES_PER_LEVEL == 0) {
+            myCurrentLevel++;
+        }
+        
+        //SCORE CHANGER
+        final int modFour = 4;
+        final int modThree = 3;
+        final int scoreOne = 1200;
+        final int scoreTwo = 300;
+        final int scoreThree = 100;
+        final int scoreFour = 40;
+        if (myLinesCleared % modFour == 0) {
+            myScore += scoreOne * myCurrentLevel;
+            //System.out.println("Adding 1200 * " + myCurrentLevel);
+        } else if (myLinesCleared % modThree == 0) {
+            myScore += scoreTwo * myCurrentLevel;
+            //System.out.println("Adding 300 * " + myCurrentLevel);
+        } else if (myLinesCleared % 2 == 0) {
+            myScore += scoreThree * myCurrentLevel;
+            //System.out.println("Adding 100 * " + myCurrentLevel);
+        } else {
+            myScore += scoreFour * myCurrentLevel;
+            //System.out.println("Adding 40 * " + myCurrentLevel);
+        }
+    }
+    
+    @Override
+    public void update(final Observable theOb, final Object theObject) {
+        if (theObject instanceof Integer[]) {
+            myLinesCleared++;
+            refreshInfo();
+            repaint();
+        }
+    }
+
+}

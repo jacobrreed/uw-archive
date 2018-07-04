@@ -1,0 +1,79 @@
+package view;
+
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import model.Board;
+import model.TetrisPiece;
+
+/**
+ * 
+ * Panel that shows next piece in line.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class NextPiecePanel extends JPanel implements Observer {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = 168426035370641970L;
+    /** Dimension of panel. */
+    private static final Dimension PANE_SIZE = new Dimension(200, 200);
+    /** Block size. */
+    private static final int BLOCK_SIZE = 30;
+    /**Next piece.*/
+    private TetrisPiece myNext;
+    /**Temp placeholder.*/
+    private JLabel myLabel;
+    /** Game Status. */
+    private Boolean myGameStatus;
+
+    
+    /**
+     * Constructor.
+     */
+    public NextPiecePanel() {
+        super();
+        setBackground(Color.WHITE);
+        setPreferredSize(PANE_SIZE);
+        this.setLayout(new GridLayout(6, 2));
+        myGameStatus = false;
+    }
+   
+    @Override
+    public void update(final Observable theOb, final Object theObject) {
+        //if a next piece
+        if (theOb instanceof Board && theObject instanceof TetrisPiece) {
+            myNext = (TetrisPiece) theObject;
+        }
+        //If game is over.
+        if (theObject instanceof Boolean) {
+            myGameStatus = (Boolean) theObject;
+        }
+    }
+    
+    /**
+     * Painting.
+     * @param theGraphics Graphics.
+     */
+    protected void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2d = (Graphics2D) theGraphics;
+    }
+    
+    /**
+     * Setter for game status.
+     * @param theBool Status of game.
+     */
+    void setStatus(final Boolean theBool) {
+        myGameStatus = theBool;
+    }
+    
+}

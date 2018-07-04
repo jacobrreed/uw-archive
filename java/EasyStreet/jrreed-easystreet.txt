@@ -1,0 +1,23 @@
+Assignment name: Assignment 3
+TCSS 305: Programming Practicum, Spring 2017
+
+Name:Jacob Reed
+UWNetID:jrreed
+Subversion Revision Number:30
+Extensions used: 0
+
+
+Assignment Overview:
+The purpose of this assignment was to test our knowledge on polymorphism and hierarchy. The assignment consisted of creating an AbstractVehicle class that implemented the Vehicle interface. Then creating child vehicles such as Truck, Car, Taxi, etc. that utilized the parent class AbstractVehicle for code reuse in a efficient way.
+
+
+Technical Impression:
+To complete this assignment, I first created the AbstractVehicle class which implemented the Vehicle interface and implemented all methods (except for canPass and chooseDirection). The child classes: Truck, Car, Taxi, ATV, Bicycle, and Human only had to implement the abstract methods canPass and chooseDirection inherited from the AbstractVehicle class. For the AbstractVehicle class I looked for things in common that all vehicles shared such as the getter of the image name, death timer, collision, etc. and implemented those into the AbstractVehicle class since those methods were generally the same across all children vehicles. I then implemented each child vehicle’s canPass and chooseDirection and tested each vehicle separately by commenting out the switch/case statement in the given GUI code.  After I was sure the vehicles looked like they were all working correctly I uncommented the GUI code so that all vehicles were present on the map and enabled the debug mode to watch the collisions and check to make sure the amount of pokes were lining up with their revive timers as well as to make sure the proper vehicles died when colliding with the appropriate vehicles. After all this was complete I ran the HumanTest Junit test case and got 6/6 tests to pass, I then created the TruckTest to somewhat mirror the HumanTest but changed the chooseDirection and canPass tests appropriately to fit the truck’s specifications given in the assignment guide. The test passed which ensures that Truck is working properly. The hardest part of this assignment was probably finding out which methods should be implemented at the parent level and finding unique ways to implement them to work across all children vehicles. The other hardship of the assignment was implementing the chooseDirection method because of the number of tests and parameters it had to deal with to check for direction and light statuses, as well as getting certain vehicles to prefer certain paths of movement such as the bicycle always preferring a trail. The canPass method was not that hard to implement. I had to create helper methods for chooseDirection in most of the children vehicles because of Metrics Cycolmatic warnings due to the amount of if/else statements inside one body of code.
+
+Unresolved problems in my submission:
+none 
+
+
+Questions:
+none
+

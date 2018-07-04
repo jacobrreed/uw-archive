@@ -1,0 +1,37 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JPanel;
+
+/**
+ * 
+ * Panel that shows next piece in line.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class GameInfo extends JPanel implements Observer {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = -904014731331910425L;
+    /** Dimension of panel. */
+    private static final Dimension PANE_SIZE = new Dimension(200, 170);
+    
+    /**
+     * Constructor.
+     */
+    public GameInfo() {
+        super();
+        setBackground(Color.GRAY);
+        setPreferredSize(PANE_SIZE);
+    }
+   
+    @Override
+    public void update(final Observable theOb, final Object theObject) {
+        // TODO Auto-generated method stub 
+    }
+
+}

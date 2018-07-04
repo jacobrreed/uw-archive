@@ -1,0 +1,28 @@
+/*
+ * TCSS 305 - Assignment 4: SnapShop
+ */
+
+package gui;
+
+import javax.swing.*;
+/**
+ * 
+ * SnapSHopGUI.java.
+ * @author Jacob Reed
+ * @version Apr 21, 2017
+ *
+ */
+public class SnapShopGUI extends JFrame {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2144739668936849562L;
+
+    /**
+     * 
+     */
+    public void start() {
+        javax.swing.JOptionPane.showMessageDialog(null, "SnapShop placeholder");
+    }
+}

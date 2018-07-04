@@ -1,0 +1,55 @@
+/**
+ * PowerPaint
+ * Assignment 5
+ * Spring 2017 TCSS 305
+ */
+package action;
+
+import gui.PaintPanel;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import tools.EllipseTool;
+import tools.Tool;
+
+/**
+ * 
+ * Ellipse Action.
+ * @author Jacob Reed
+ * @version May 2, 2017
+ *
+ */
+public class EllipseAction extends AbstractAction {
+    /**Generated SUID. */
+    private static final long serialVersionUID = -8130128650289752749L;
+    /**Initial point. */
+    private static final Point INIT_POINT = new Point(0, 0);
+    /** Paint Panel. */
+    private PaintPanel myPanel;
+    /** Tool. */
+    private final Tool myTool;
+    
+    /**
+     * Constructor.
+     * @param thePaintPanel Paint panel to use.
+     */
+    public EllipseAction(final JPanel thePaintPanel) {
+        super("Ellipse", new ImageIcon("images/ellipse_bw.gif"));
+        putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
+        putValue(Action.SELECTED_KEY, true);
+        putValue(Action.SHORT_DESCRIPTION, "Ellipse");
+        myPanel = (PaintPanel) thePaintPanel;
+        myTool = new EllipseTool(INIT_POINT, INIT_POINT);
+    }
+    
+    @Override
+    public void actionPerformed(final ActionEvent theEvent) {
+        myPanel.setTool(myTool);
+        myPanel.repaint();
+    }
+
+}

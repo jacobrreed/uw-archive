@@ -1,0 +1,143 @@
+/*
+ * Tetris Project
+ */
+package view;
+
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JPanel;
+import model.Block;
+
+/**
+ * 
+ * Game Board.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class GamePanel extends JPanel implements Observer {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = -996104457414022004L;
+    /** Size of Board. */
+    private static final Dimension GAME_DIM = new Dimension(300, 400);
+    /** Size of pieces. */
+    private static final int PIECE_SIZE = 30;
+    /** Shift modifier to correctly align blocks. */
+    private static final int SHIFT = 28;
+    /** BG Color. */
+    private static final Color BG_COLOR = new Color(40, 39, 37);
+    /** Block list. */
+    private List<Block[]> myBlockList;
+    /**Grid. */
+    private boolean myGrid;
+    /** Game status. */
+    private Boolean myGameStatus;
+    /**Default Gradient Colors. */
+    private Boolean myDefault;
+    
+    /**
+     * Constructor.
+     */
+    public GamePanel() {
+        super();
+        setBackground(BG_COLOR);
+        setPreferredSize(GAME_DIM);
+        myBlockList = new ArrayList<Block[]>();
+        myGrid = false;
+        myGameStatus = true;
+        myDefault = true;
+    }
+    
+    
+    @Override
+    protected void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2d = (Graphics2D) theGraphics;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                             RenderingHints.VALUE_ANTIALIAS_ON);
+
+        //GRID
+        if (myGrid) {
+            g2d.setColor(Color.GRAY);
+            //Horizontal Lines
+            for (int i = 0; i < getHeight(); i += PIECE_SIZE) {
+                g2d.drawLine(0, i, getWidth(), i);
+            }
+            //Vertical Lines
+            for (int i = 0; i < getWidth(); i += PIECE_SIZE) {
+                g2d.drawLine(i, 0, i, getHeight());
+            }   
+            g2d.setColor(Color.RED);
+        }
+        
+        
+        
+        //Next Piece Paint.
+        if (myGameStatus) {
+            if (myDefault) {
+                final GradientPaint primary = new GradientPaint(0, 0, Color.RED,
+                                                                0, getHeight(), Color.ORANGE);
+                g2d.setPaint(primary);
+            } 
+            for (int y = 0; y < myBlockList.size(); y++) {  
+                //COLS
+                for (int x = 0; x < myBlockList.get(y).length; x++) {
+                    if (myBlockList.get(y)[x] != null) {
+                        final int tempY = (getHeight() - SHIFT) - (y * PIECE_SIZE);
+                        g2d.fillRect(x * PIECE_SIZE, tempY,
+                                     PIECE_SIZE, PIECE_SIZE);
+                    }
+                }
+            }
+        }
+    }
+
+    
+    /**
+     * Turns on grid.
+     * @param theBool True to turn grid on, false otherwise.
+     */
+    protected void setGrid(final boolean theBool) {
+        if (theBool) {
+            myGrid = true;
+            myDefault = false;
+        } else {
+            myGrid = false;
+            myDefault = true;
+        }
+    }
+    
+    /**
+     * Setter for game status.
+     * @param theBool Status of game.
+     */
+    void setStatus(final Boolean theBool) {
+        myGameStatus = theBool;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public void update(final Observable theObv, final Object theObject) {
+        if (theObject instanceof List<?>) {
+            myBlockList = (ArrayList<Block[]>) theObject;
+            repaint();
+        }
+        
+        if (theObject instanceof Boolean) {
+            myGameStatus = (Boolean) theObject;
+        }
+        
+    }
+}
+
+

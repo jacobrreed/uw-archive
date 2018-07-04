@@ -1,0 +1,116 @@
+/*
+ * TCSS 305 - Easy Street
+ */
+
+package model;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+/**
+ * 
+ * Taxis can only travel on streets and through lights and crosswalks.
+ * A taxi prefers to drive straight ahead if it can. If it cannot move 
+ * straight ahead, it turns left if possible; if
+ * it cannot turn left, it turns right if possible; as a last resort, it turns around.
+ * Taxis stop for red lights; if a traffic light is immediately ahead of the 
+ * taxi and the light is red, the Taxi
+ * stays still and does not move until the light turns green. It does not turn 
+ * to avoid the light. When the light
+ * turns green the taxi resumes its original direction. Taxis ignore yellow and green lights.
+ * Taxis stop for (temporarily) red crosswalk lights. If a crosswalk light is 
+ * immediately ahead of the taxi
+ * and the crosswalk light is red, the Taxi stays still and does not move for
+ * 3 clock cycles or until the
+ * crosswalk light turns green, whichever occurs first. It does not turn to avoid
+ * the crosswalk light. When
+ * the crosswalk light turns green, or after 3 clock cycles, whichever happens
+ * first, the taxi resumes its
+ * original direction. A Taxi will drive through yellow or green crosswalk
+ * lights without stopping.
+ * Collision behavior: A taxi dies if it collides with a 
+ * living truck, and stays dead for 10 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Taxi extends AbstractVehicle {
+    /** Constant 3 for clock counter during crosswalk. */
+    private static final int MOVE_CLOCK = 3;
+    /** Death time. */
+    private static final int DEATH_TIME = 10;
+    /** Clock counter for movement during crosswalk red light. */
+    private int myClockCounter;
+ 
+    /**
+     * Constructor.
+     * @param theX X coordinate.
+     * @param theY Y coordinate.
+     * @param theDir Direction.
+     */
+    public Taxi(final int theX, final int theY, 
+                 final Direction theDir) {
+        super(theX, theY, theDir);
+        myDeathTimer = DEATH_TIME;
+        myClockCounter = 0;
+        myTerrain = new ArrayList<Terrain>();
+        myTerrain.add(Terrain.CROSSWALK);
+        myTerrain.add(Terrain.STREET);
+        myTerrain.add(Terrain.LIGHT);
+    }
+    
+    /**
+     * Returns whether or not truck can pass through terrain dependant on light.
+     * @param theTerrain Terrain to analyze.
+     * @param theLight Whether light is green or red.
+     * @return Can vehicle pass. True if so.
+     */
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        boolean result = false;
+        if (myTerrain.contains(theTerrain)) {
+            if (theTerrain == Terrain.CROSSWALK
+                            && theLight == Light.GREEN) {
+              //If crosswalk and green
+                result = true;
+            } else if (theTerrain == Terrain.LIGHT
+                            && theLight != Light.RED) {
+                //If at light and its green or yellow
+                result = true;
+            } else if (theTerrain == Terrain.STREET) {
+                //if on street
+                result = true;
+            } else if (theTerrain == Terrain.CROSSWALK
+                            && theLight == Light.RED) {
+                //If at crosswalk red light move clock begins or checks
+                if (myClockCounter == MOVE_CLOCK) {
+                    result = true; //GO!
+                    myClockCounter = 0; //reset clock
+                } else {
+                    //Increment until it reaches 3
+                    myClockCounter++; 
+                }
+            } 
+        }
+        return result;
+    }
+
+    @Override
+    public Direction chooseDirection(final Map<Direction, Terrain> theNeighbors) {
+        //FIX - Taxi is turning around instead of going left near crosswalk yellows
+        if ((theNeighbors.get(getDirection()) == Terrain.STREET) 
+                        || (theNeighbors.get(getDirection()) == Terrain.LIGHT)) {
+            myDirection = getDirection();
+        } else if ((theNeighbors.get(getDirection().left()) == Terrain.STREET) 
+                        || (theNeighbors.get(getDirection().left()) == Terrain.LIGHT)) {
+            myDirection = getDirection().left();
+        } else if ((theNeighbors.get(getDirection().right()) == Terrain.STREET) 
+                        || (theNeighbors.get(getDirection().right()) == Terrain.LIGHT)) {
+            myDirection = getDirection().right();
+        } else {
+            myDirection = getDirection().reverse();
+        }
+      
+        return myDirection;
+    }
+    
+}

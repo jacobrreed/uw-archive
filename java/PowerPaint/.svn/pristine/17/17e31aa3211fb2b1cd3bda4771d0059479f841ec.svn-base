@@ -1,0 +1,65 @@
+/**
+ * PowerPaint
+ * Assignment 5
+ * Spring 2017 TCSS 305
+ */
+package gui;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+/**
+ * 
+ * Main GUI.
+ * @author Jacob Reed
+ * @version Apr 28, 2017
+ *
+ */
+public class PowerPaintGUI extends JPanel {
+    
+    /** Generated SUID. */
+    private static final long serialVersionUID = 3904434817686336323L;
+    /** Main frame. */
+    private JFrame myFrame;
+    
+    /**
+     * Constructor.
+     */
+    public PowerPaintGUI() {
+        myFrame = new JFrame();
+        
+    }
+    
+    /**
+     * Runs main GUI upon parent call.
+     */
+    public void start() {
+        myFrame.setTitle("PowerPaint");
+        myFrame.setResizable(true);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //ADD EVERYTHING
+        myFrame.pack();
+        myFrame.setVisible(true);
+    }
+    
+    /**
+     * Setups toolbar at top of GUI.
+     */
+    private void setupToolbar() {
+        //TODO
+    }
+    
+    /**
+     * Setups layout via layout managers.
+     */
+    private void setupLayout() {
+        //TODO
+    }
+    
+    /**
+     * Setups drawing panel.
+     */
+    private void setupDrawingPanel() {
+        //TODO
+    }
+}

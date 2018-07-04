@@ -1,0 +1,19 @@
+#game {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    width: 700px;
+    height: 700px;
+    background-color: black;
+}
+
+body {
+    background-color: black;
+}
+
+.container {
+    position: absolute;
+    left: 20px;
+    top: 740px;
+    color: white;
+}

@@ -1,0 +1,124 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Parent class for all vehicles.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+
+abstract class AbstractVehicle implements Vehicle {
+    /** Is vehicle alive or not? */
+    private boolean myAlive;
+    /** Pokes for revival. */
+    private int myPokes;
+    /** Direction. */
+    private Direction myDirection;
+    /** X value. */
+    private int myX;
+    /** Y value. */
+    private int myY;
+    /** Alive gif. */
+    private String myAliveGif;
+    /** Dead gif. */
+    private String myDeadGif;
+    
+    /**
+     * Prevents instaniation. Also sets variables.
+     * @param theAlive Alive or not.
+     * @param thePokes Number of pokes.
+     * @param theDirection Direction.
+     * @param theX X coord.
+     * @param theY Y coord.
+     */
+    protected AbstractVehicle(final boolean theAlive, 
+                              final int thePokes, final Direction theDirection,
+                              final int theX, final int theY,
+                              final String theAliveGif, final String theDeadGif) {
+        myAlive = theAlive;
+        myPokes = thePokes;
+        myDirection = theDirection;
+        setY(theY);
+        setX(theX);
+        myAliveGif = theAliveGif;
+        myDeadGif = theDeadGif;
+    }
+    
+    @Override
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Direction chooseDirection(final Map<Direction, Terrain> theNeighbors) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void collide(final Vehicle theOther) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int getDeathTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getImageFileName() {
+        String result = "";
+        if (myAlive) {
+            result = myAliveGif;
+        } else {
+            result = myDeadGif;
+        }
+        return result;
+    }
+
+    @Override
+    public Direction getDirection() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setDirection(final Direction theDir) {
+        myDirection = theDir;
+    }
+
+    @Override
+    public void setX(final int theX) {
+        myX = theX;
+        
+    }
+
+    @Override
+    public void setY(final int theY) {
+        myY = theY;
+    }
+    
+    /**
+     * To String.
+     * @return String for Vehicle.
+     */
+    public String toString() {
+        final StringBuilder result = new StringBuilder();
+        result.append(myAlive);
+        result.append(" - Pokes: " + myPokes);
+        result.append("Pos: (" + myX + "," + myY + ")");
+        return result.toString();
+    }
+}

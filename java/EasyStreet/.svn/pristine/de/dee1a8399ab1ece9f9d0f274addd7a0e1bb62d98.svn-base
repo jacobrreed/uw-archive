@@ -1,0 +1,111 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Cars can only travel on streets and through lights and crosswalks.
+ * A car prefers to drive straight ahead on the street if it can. 
+ * If it cannot move straight ahead, it turns left
+ * if possible; if it cannot turn left, it turns right if possible; 
+ * as a last resort, it turns around.
+ * Cars stop for red lights; if a traffic light is immediately ahead 
+ * of the car and the light is red, the car stays
+ * still and does not move. It does not turn to avoid the light. When
+ *  the light turns green, the car resumes its
+ * original direction.
+ * Cars ignore yellow and green lights.
+ * Cars stop for red and yellow crosswalk lights, but drive through 
+ * green crosswalk lights without stopping.
+ * Collision behavior: A car dies if it collides with a living truck, and stays dead for 10 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Car implements Vehicle  {
+
+    @Override
+    public boolean canPass(Terrain theTerrain, Light theLight) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Direction chooseDirection(Map<Direction, Terrain> theNeighbors) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void collide(Vehicle theOther) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int getDeathTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getImageFileName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Direction getDirection() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getX() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getY() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean isAlive() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void poke() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setDirection(Direction theDir) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setX(int theX) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setY(int theY) {
+        // TODO Auto-generated method stub
+        
+    }
+
+}

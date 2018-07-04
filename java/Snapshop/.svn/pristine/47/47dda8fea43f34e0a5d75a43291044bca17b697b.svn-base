@@ -1,0 +1,22 @@
+Assignment name: Assignment 4 
+TCSS 305: Programming Practicum, Spring 2017
+
+Name: Jacob Reed
+UWNetID: jrreed
+Subversion Revision Number:36
+
+Assignment Overview:
+The purpose of this assignment was to familiarize myself with creating a simple GUI in Java using JFrame, JPanel, and layout managers. I had to write the front end code for the instructor provided back end code to apply filters to an image, as well as create the buttons and action handlers for different options.
+
+
+Technical Impression:
+To complete this assignment, I utilized JFrame, JPanel, different layout managers, and the instructor provided back end code to create an image editing program that could open a file, save a file, close a file, as well as applying various filters to the image. To start I thought about how I wanted to nest the different panels and layout managers inside of each other to create my goal of the GUI overall layout. I created a border layout manager as the main panel, then created a button panel with a border layout manager to hold the two children grid layout manager button containers. This ensured the buttons stayed properly positioned even when resizing. After creating the layout of the GUI I created the methods for opening, closing, and saving the image file. I then created the button methods that created the buttons and placed them into their respective panels. I ran into an issue when I started doing the ActionListener code and ended up restructuring my button creation methods and ended up creating a few more helper methods. Upon doing this I created the ActionListeners pretty successively by using the lambda expression for the option buttons and creating an inner subclass inside the filter button creator method. Overall I didn’t have too much trouble with this project except for trying to figure out the ActionListener situation which I ended up learning more about it as I researched online and eventually figured it out. Also, I started this assignment pretty early (after class last Friday) so if I could do it differently I would probably extend JPanel instead of JFrame because of what was discussed in class about how easy it is to import your entire GUI into another GUI if you just extend JPanel, but I was pretty far into the assignment before I learned this so I just kept going with what I had. I look forwarding to trying that approach for the next assignment utilizing GUIs.
+
+
+Unresolved problems in my submission:
+none 
+
+
+Questions:
+none
+

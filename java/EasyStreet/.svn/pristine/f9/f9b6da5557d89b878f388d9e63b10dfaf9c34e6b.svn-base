@@ -1,0 +1,111 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * ATVs can travel on any terrain except walls. They randomly select to go
+ * straight, turn left, or turn right. ATV’s never reverse direction (they never need to).
+ *  ATV’s
+ * drive through all traffic lights and crosswalk lights without stopping!
+ * Collision behavior: An ATV dies if it collides with a living truck, car, 
+ * or taxi, and stays dead for 20 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Atv implements Vehicle  {
+    /** Is vehicle alive or not? */
+    private boolean myAlive;
+    /** Pokes for revival. */
+    private int myPokes;
+    /** Direction. */
+    private Direction myDirection;
+    /** X value. */
+    private int myX;
+    /** Y value. */
+    private int myY;
+    
+    @Override
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Direction chooseDirection(final Map<Direction, Terrain> theNeighbors) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void collide(final Vehicle theOther) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int getDeathTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getImageFileName() {
+        String result = "";
+        if (myAlive) {
+            result = "atv.gif";
+        } else {
+            result = "atv_dead.gif";
+        }
+        return result;
+    }
+
+    @Override
+    public Direction getDirection() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getX() {
+        return myX;
+    }
+
+    @Override
+    public int getY() {
+        return myY;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return myAlive;
+    }
+
+    @Override
+    public void poke() {
+        myPokes++;
+    }
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setDirection(final Direction theDir) {
+        myDirection = theDir;
+    }
+
+    @Override
+    public void setX(final int theX) {
+        myX = theX;
+    }
+
+    @Override
+    public void setY(final int theY) {
+        myY = theY;
+    }
+
+}

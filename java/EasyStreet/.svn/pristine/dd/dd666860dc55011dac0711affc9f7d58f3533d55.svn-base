@@ -1,0 +1,94 @@
+package model;
+
+import java.util.Map;
+
+/**
+ * 
+ * Taxis can only travel on streets and through lights and crosswalks.
+ * A taxi prefers to drive straight ahead if it can. If it cannot move 
+ * straight ahead, it turns left if possible; if
+ * it cannot turn left, it turns right if possible; as a last resort, it turns around.
+ * Taxis stop for red lights; if a traffic light is immediately ahead of the 
+ * taxi and the light is red, the Taxi
+ * stays still and does not move until the light turns green. It does not turn 
+ * to avoid the light. When the light
+ * turns green the taxi resumes its original direction. Taxis ignore yellow and green lights.
+ * Taxis stop for (temporarily) red crosswalk lights. If a crosswalk light is 
+ * immediately ahead of the taxi
+ * and the crosswalk light is red, the Taxi stays still and does not move for
+ * 3 clock cycles or until the
+ * crosswalk light turns green, whichever occurs first. It does not turn to avoid
+ * the crosswalk light. When
+ * the crosswalk light turns green, or after 3 clock cycles, whichever happens
+ * first, the taxi resumes its
+ * original direction. A Taxi will drive through yellow or green crosswalk
+ * lights without stopping.
+ * Collision behavior: A taxi dies if it collides with a 
+ * living truck, and stays dead for 10 moves.
+ * @author Jacob Reed
+ * @version Apr 14, 2017
+ *
+ */
+public class Taxi extends AbstractVehicle {
+    /** Death time. */
+    private final int myDeathTime = 10;
+    /** Clock counter for movement during crosswalk red light. */
+    private int myClockCounter;
+    /** Constant 3 for clock counter during crosswalk. */
+    private final int myCount = 3;
+    /**
+     * Constructor.
+     * @param theX X coordinate.
+     * @param theY Y coordinate.
+     * @param theDir Direction.
+     */
+    public Taxi(final int theX, final int theY, 
+                 final Direction theDir) {
+        super(theX, theY, theDir);
+    }
+    
+    /**
+     * Returns whether or not truck can pass through terrain dependant on light.
+     * @param theTerrain Terrain to analyze.
+     * @param theLight Whether light is green or red.
+     * @return Can vehicle pass. True if so.
+     */
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        boolean result = false;
+        //Street pass
+        if (theTerrain == Terrain.STREET 
+                        && theLight == Light.GREEN) {
+            result = true;
+        } else if (theTerrain == Terrain.CROSSWALK
+                        && (theLight == Light.GREEN || theLight == Light.YELLOW)) {
+            //Crosswalk green light or yellow light.
+            result = true;
+        }
+        //Crosswalk red light logic.
+        if (theTerrain == Terrain.CROSSWALK
+                        && theLight == Light.RED) {
+            if (myClockCounter != myCount) {
+                //If light is red and counter is not at 3
+                result = false;
+                myClockCounter++;
+            } else {
+                //Counter is now at 3. Proceed.
+                result = true;
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Checks collision of vehicle.
+     * @param theOther Vehicle collided with.
+     */
+    public void  collide(final Vehicle theOther) {
+        if (theOther.getClass().getSimpleName().toLowerCase().equals("truck")) {
+            myAlive = false;
+            myDeathTimer = myDeathTime;
+        } else {
+            myAlive = true;
+        }
+    }
+}

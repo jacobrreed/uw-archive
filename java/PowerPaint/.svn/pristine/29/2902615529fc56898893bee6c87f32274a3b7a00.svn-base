@@ -1,0 +1,22 @@
+Assignment name: Assignment 5 
+TCSS 305: Programming Practicum, Spring 2017
+
+Name: Jacob Reed
+UWNetID: jrreed
+Subversion Revision Number:42
+Extensions Used: 0
+
+Assignment Overview:
+The purpose of part A of this assignment was to build the working front end of the application for PowerPaint. To get the GUI completely working so that in part B I can implement all the painting tools to work properly with the front end.
+
+
+Technical Impression:
+To complete part A of this assignment I first thought of the layout I wanted for my application and how I would put everything together. I started by making the JFrame with a BorderLayout as the layout manager which is perfect for the layout of this GUI. I then added the toolbar to the south of the frame, the menu bar to the top of the frame, and then the paint panel to the center of the frame. After getting the GUI working in the proper layout I added all the placeholder menu items including the thickness slider to make the menu look exactly like the instructions said. I then started creating the tools focusing on the pencil and line tools until I got those to work properly, I left the remaining tools alone for now so that I could complete them on part B. I then created a ColorIcon class which handles the creation of the color icon to be placed in the menu bar next to the primary and secondary colors. After this I implemented the JColorChooser which allows the selection of colors but starts with the default UW purple and UW gold which I got the RGB values off of the UW website, which didn’t look like the screenshots in the pdf. The hardest part of this assignment and most challenging was trying to figure out how I wanted to handle the tools and actions as far as inheritance goes, which I think the way I did it works pretty well and efficiently.
+
+
+Unresolved problems in my submission:
+None
+
+Questions:
+None
+

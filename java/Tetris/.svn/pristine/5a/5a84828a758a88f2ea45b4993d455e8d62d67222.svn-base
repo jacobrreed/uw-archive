@@ -1,0 +1,266 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+
+/**
+ * 
+ * Panel that shows next piece in line.
+ * @author Jacob Reed
+ * @version May 19, 2017
+ *
+ */
+public class KeybindsInfo extends JPanel implements Observer {
+
+    /**Generated SUID. */
+    private static final long serialVersionUID = 168426035370641970L;
+    /** Dimension of panel. */
+    private static final Dimension PANE_SIZE = new Dimension(200, 200);
+    /** Dimension of dialog. */
+    private static final Dimension DIAG_SIZE = new Dimension(250, 300);
+    /** Dimensions of text box. */
+    private static final Dimension TEXT_DIM = new Dimension(10, 15);
+    /** Dimensions of text box. */
+    private static final Dimension BUT_DIM = new Dimension(70, 80);
+    /** Text field constraints. */
+    private static final Dimension FIELD_DIM = new Dimension(100, 20);
+    /** Config info text dimensions. */
+    private static final Dimension CONFIG_INFO = new Dimension(200, 100);
+    /** Delim for parse. */
+    private static final String DELIM = ",";
+    /**Font size. */
+    private static final int FONT_SIZE = 14;
+    /** Text box. */
+    private JTextArea myText;
+    /** Field. */
+    private JTextField myLeftField;
+    /** Field. */
+    private JTextField myRightField;
+    /** Field. */
+    private JTextField myRotateField;
+    /** Field. */
+    private JTextField myDownField;
+    /** Field. */
+    private JTextField myDropField;
+    /** Diag Frame.*/
+    private JFrame myDiagFrame;
+    /** Diag Panel. */
+    private JPanel myDiagPane;
+    /** Diag Panel. */
+    private JPanel myDiagLeftPane;
+    /** Diag Panel. */
+    private JPanel myDiagRightPane;
+    /**String array for binds. */
+    private String[] myLeftBinds;
+    /**String array for binds. */
+    private String[] myRightBinds;
+    /**String array for binds. */
+    private String[] myRotateBinds;
+    /**String array for binds. */
+    private String[] myDownBinds;
+    /**String array for binds. */
+    private String[] myDropBinds;
+    /**Boolean of change status. */
+    private boolean myChange;
+    
+    /**
+     * Constructor.
+     */
+    public KeybindsInfo() {
+        super();
+        setBackground(Color.GRAY);
+        setPreferredSize(PANE_SIZE);
+        this.setLayout(new BorderLayout());
+        setupKeybindInfo();
+        setupChangeButton();
+        setupInitBinds();
+        myChange = false;
+    }
+    
+    /**
+     * Setups init binds.
+     */
+    private void setupInitBinds() {
+        myLeftBinds = new String[] {"a", "A", "LEFT"};
+        myRightBinds = new String[] {"d", "D", "RIGHT"};
+        myDownBinds = new String[] {"s", "S", "DOWN"};
+        myRotateBinds = new String[] {"w", "W", "UP"};
+        myDropBinds = new String[] {"SPACE"};
+    }
+    /**
+     * Displays information about keybinds.
+     */
+    private void setupKeybindInfo() {
+        myText = new JTextArea(TEXT_DIM.width, TEXT_DIM.height);
+        myText.setEditable(false);
+        myText.setBackground(Color.GRAY);
+        myText.setForeground(Color.BLACK);
+        myText.setFont(new Font("Comic Sans", Font.PLAIN, FONT_SIZE));
+        this.add(myText, BorderLayout.WEST);
+    }
+    
+    /**
+     * Setups change button for keybindings.
+     */
+    private void setupChangeButton() {
+        final JButton button = new JButton("Change");
+        final JPanel flowPanel = new JPanel(new FlowLayout());
+        button.setSize(BUT_DIM);
+        button.addActionListener(e -> {
+            openDialog();
+        });
+        flowPanel.setBackground(Color.GRAY);
+        this.add(flowPanel, BorderLayout.CENTER);
+        flowPanel.add(button);
+    }
+    
+    /**
+     * Opens dialog to change keybindings.
+     */
+    public void openDialog() {
+        myDiagFrame = new JFrame();
+        myDiagFrame.setTitle("Keybind Configuration");
+        myDiagFrame.setVisible(true);
+        myDiagFrame.setResizable(true);
+        myDiagFrame.setLocationRelativeTo(null);
+        myDiagPane = new JPanel(new BorderLayout());
+        myDiagFrame.add(myDiagPane);
+        myDiagPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        myDiagPane.setPreferredSize(DIAG_SIZE);
+        myDiagPane.setBackground(Color.GRAY);
+        //Labels
+        final JLabel moveL = new JLabel("Move Left:");
+        final JLabel moveR = new JLabel("Move Right:");
+        final JLabel rotate = new JLabel("Rotate:");
+        final JLabel moveD = new JLabel("Move Down:");
+        final JLabel drop = new JLabel("Drop:");
+        myDiagLeftPane = new JPanel(new GridLayout(0, 1, 1, 1));
+        myDiagLeftPane.setBackground(Color.GRAY);
+        myDiagPane.add(myDiagLeftPane, BorderLayout.WEST);
+        myDiagRightPane = new JPanel(new GridLayout(0, 1, 1, 1));
+        myDiagPane.add(myDiagRightPane, BorderLayout.CENTER);
+        myDiagRightPane.setBackground(Color.GRAY);
+        myDiagLeftPane.add(moveL);
+        myDiagLeftPane.add(moveR);
+        myDiagLeftPane.add(rotate);
+        myDiagLeftPane.add(moveD);
+        myDiagLeftPane.add(drop);
+        setupFields();
+        myDiagFrame.pack();
+    }
+    
+    /**
+     * Setups text fields.
+     */
+    private void setupFields() {
+      //Text fields
+        myLeftField = new JTextField();
+        myRightField = new JTextField();
+        myRotateField = new JTextField();
+        myDownField = new JTextField();
+        myDropField = new JTextField();
+        myLeftField.setPreferredSize(FIELD_DIM);
+        myRightField.setPreferredSize(FIELD_DIM);
+        myRotateField.setPreferredSize(FIELD_DIM);
+        myDownField.setPreferredSize(FIELD_DIM);
+        myDropField.setPreferredSize(FIELD_DIM);
+        myDiagRightPane.add(myLeftField);
+        myDiagRightPane.add(myRightField);
+        myDiagRightPane.add(myRotateField);
+        myDiagRightPane.add(myDownField);
+        myDiagRightPane.add(myDropField);
+        final JTextArea configInfo = new JTextArea();
+        configInfo.setEditable(false);
+        configInfo.setText("To set keybind type the name of the keys you would like to"
+                        + " use, seperated by commas. \n For Example: \"W\" for W \n\tor "
+                        + "\"UP\" for the up arrow.");
+        configInfo.setPreferredSize(CONFIG_INFO);
+        configInfo.setBackground(Color.GRAY);
+        configInfo.setLineWrap(true);
+        myDiagPane.add(configInfo, BorderLayout.NORTH);
+        final JButton submit = new JButton("Save");
+        myDiagPane.add(submit, BorderLayout.SOUTH);
+        submit.addActionListener(e -> {
+            setNewBinds(myLeftField.getText(), myRightField.getText(),
+                        myRotateField.getText(), myDownField.getText(),
+                        myDropField.getText());
+            myChange = true;
+            myDiagFrame.dispose();
+        });
+    }
+    
+    /**
+     * Returns if changed or not.
+     * @return if changed true, false otherwise.
+     */
+    protected boolean isChanged() {
+        return myChange;
+    }
+    
+    /**
+     * Sets changed to false.
+    */
+    protected void setChanged() {
+        myChange = false;
+    }
+    /**
+     * Parses text fields for new binds.
+     * @param theLeft Left text.
+     * @param theRight right text
+     * @param theRotate rotate text
+     * @param theDown down text
+     * @param theDrop drop text
+     */
+    private void setNewBinds(final String theLeft, final String theRight,
+                             final String theRotate, final String theDown,
+                             final String theDrop) {
+        myLeftBinds = theLeft.split(DELIM);
+        myRightBinds = theRight.split(DELIM);
+        myRotateBinds = theRotate.split(DELIM);
+        myDownBinds = theDown.split(DELIM);
+        myDropBinds = theDrop.split(DELIM);
+    }
+    
+    /**
+     * Gets binds in a list.
+     * @return List of binds String[]
+     */
+    protected Map<String, String[]> getBinds() {
+        final Map<String, String[]> result = new HashMap<String, String[]>();
+        result.put("Left", myLeftBinds);
+        result.put("Right", myRightBinds);
+        result.put("Rotate", myRotateBinds);
+        result.put("Down", myDownBinds);
+        result.put("Drop", myDropBinds);
+        return result;
+    }
+    /**
+     * Sets the text inside box.
+     * @param theString String to set.
+     */
+    public void setText(final String theString) {
+        myText.setText(theString);
+    }
+    
+    @Override
+    public void update(final Observable theOb, final Object theObject) {
+        // TODO Auto-generated method stub 
+    }
+
+}

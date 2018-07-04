@@ -1,0 +1,241 @@
+/**
+ * PowerPaint
+ * Assignment 5
+ * Spring 2017 TCSS 305
+ */
+package gui;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Deque;
+import java.util.LinkedList;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import tools.LineTool;
+import tools.Tool;
+import tools.ToolShape;
+
+/**
+ * 
+ * Paint panel for painting.
+ * @author Jacob Reed
+ * @version Apr 30, 2017
+ *
+ */
+public class PaintPanel extends JPanel {
+    /**Generated SUID. */
+    private static final long serialVersionUID = -1026390272530873013L;
+    /** Init point. */
+    private static final Point INIT_POINT = new Point(0, 0);
+    /**UW PURPLE from UW website. */
+    private static final Color UW_PURP = new Color(51, 0, 111, 100);
+    /** UW GOLD from UW website. */
+    private static final Color UW_GOLD = new Color(145, 123, 76, 100);
+    /** Thickness default. */
+    private static final int THICK_DEF = 1;
+    /** Default panel size. */
+    private static final Dimension DEF_DIM = new Dimension(400, 400);
+    /** Status of dragging. */
+    private boolean myDrag;
+    /** Tool. */
+    private Tool myTool;
+    /** Shapes list. */
+    private Deque<ToolShape> myShapeList;
+    /** Thickness. */
+    private int myThick;
+    /** Start point. */
+    private Point myStart;
+    /** End point. */
+    private Point myEnd;
+    /** Primary draw color. */
+    private Color myPrimColor;
+    
+    /**Secondary draw color. */
+    private Color mySecColor;
+    
+    /**
+     * Constructor.
+     */
+    public PaintPanel() {
+        super();
+        myPrimColor = UW_PURP;
+        mySecColor = UW_GOLD;
+        setupLayout();
+    }
+    
+    /**
+     * Clears paint panel if true.
+     * @param theClear True to clear, false to not.
+     */
+    public void clearPanel(final boolean theClear) {
+        if (theClear) {
+            myShapeList.clear();
+
+            repaint();
+        }
+    }
+    
+    /**
+     * Getter for primary color.
+     * @return Primary color.
+     */
+    Color getPrimColor() {
+        return myPrimColor;
+    }
+    /**
+     * Getter for secondary color.
+     * @return Secondary color.
+     */
+    Color getSecColor() {
+        return mySecColor;
+    }
+    
+    
+    /**
+     * The actual painting component.
+     * @param theGraphics Drawing component.
+     */
+    public void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        //Guaranteed to be a Graphics2D
+        final Graphics2D g2d = (Graphics2D) theGraphics;
+        //as per pdf to prevent staircase lines etc.
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+                             RenderingHints.VALUE_ANTIALIAS_ON);
+
+        //Draw using list
+        for (final ToolShape shape : myShapeList) {
+            g2d.setColor(shape.getColor());
+            g2d.setStroke(new BasicStroke(shape.getThick()));
+            g2d.draw(shape.getShape());
+        }
+        //Dragging paint
+        if (myDrag) {
+            g2d.setStroke(new BasicStroke(myThick));
+            g2d.setColor(myPrimColor);
+            
+            if (myThick != 0) {
+                g2d.draw(myTool.getShape());
+            }
+        }
+    }
+    
+    /**
+     * Sets color.
+     * @param thePrim Primary color in use.
+     * @param theSec Secondary color in use.
+     */
+    public void setColors(final Color thePrim, final Color theSec) {
+        myPrimColor = thePrim;
+        mySecColor = theSec;
+    }
+    
+    /**
+     * Sets thickness of drawing.
+     * @param theThick thickness of drawing component.
+     */
+    public void setThick(final int theThick) {
+        myThick = theThick;
+    }
+    
+
+    
+    /**
+     * Sets tool in use.
+     *
+     * @param theTool Tool to be used
+     */
+    public void setTool(final Tool theTool) {
+        myTool = theTool;
+    }
+    
+    /**
+     * Setups layout of paint panel.
+     */
+    private void setupLayout() {
+        myDrag = false;
+        //Init tool
+        myTool = new LineTool(INIT_POINT, INIT_POINT);
+        //Holds shapes for undo and redo.
+        myShapeList = new LinkedList<ToolShape>();
+        myThick = THICK_DEF;
+        this.setPreferredSize(DEF_DIM);
+        this.setBackground(Color.WHITE);
+        setupListeners();
+        this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    }
+    
+    /**
+     * Setups listeners for mouse actions.
+     */
+    private void setupListeners() {
+        this.addMouseListener(new DrawListener());
+        this.addMouseMotionListener(new DrawListener());
+    }
+    
+    /**
+     * 
+     * Inner class for mouse handling.
+     * @author Jacob Reed
+     * @version May 2, 2017
+     *
+     */
+    class DrawListener extends MouseAdapter {
+        /** Color to be drawn. */
+        private Color myDrawColor;
+        /**
+         * Handles mouse drag.
+         * @param theEvent mouse drag.
+         */
+        public void mouseDragged(final MouseEvent theEvent) {
+            myDrag = true;
+            myEnd = theEvent.getPoint();
+            myTool.setEnd(myEnd);
+            repaint();
+        }
+        
+        /**
+         * Handles mouse presses.
+         * @param theEvent Event of mouse press.
+         */
+        public void mousePressed(final MouseEvent theEvent) {
+            //FIX - Secondary color is only working after another drag
+            if (SwingUtilities.isRightMouseButton(theEvent)) {
+                myDrawColor = mySecColor;
+            } else {
+                myDrawColor = myPrimColor;
+            }
+            repaint();
+            myDrag = true;
+            myStart = theEvent.getPoint();
+            myEnd = myStart;
+            myTool.setStart(myStart);
+            myTool.setEnd(myEnd);
+            repaint();
+        }
+        
+        /**
+         * Handles mouse release.
+         * @param theEvent Mouse release event.
+         */
+        public void mouseReleased(final MouseEvent theEvent) {
+            myEnd = theEvent.getPoint();
+            myTool.setEnd(myEnd);
+            
+            if (myDrag && myThick != 0) {
+                myDrag = false;
+                
+                myShapeList.addLast(new ToolShape(myTool.getShape(), myThick, myDrawColor));
+            }
+        }
+    }
+}
+

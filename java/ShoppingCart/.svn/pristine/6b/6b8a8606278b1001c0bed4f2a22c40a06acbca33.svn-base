@@ -1,0 +1,24 @@
+Assignment name: Assignment 2 
+TCSS 305: Programming Practicum, Spring 2017
+
+Name: Jacob Reed
+UWNetID: jrreed
+Subversion Revision Number:19
+Extensions Used: 0
+
+Assignment Overview:
+The purpose of this assignment was to utilize the front end GUI that was given to use and to create a backend to make the front end work properly. I created the Item class which stores the item name and price. The ItemOrder class which holds the item and item amount to be used in the ShoppingCart class, which takes all the ItemOrders and calculates the total. Dependant on whether or not the individual is has a valid membership.
+
+
+Technical Impression:
+To complete this assignment, I first completed the Item class which stores the Item name, base price, bulk quantity (required to calculate bulk pricing), and the bulk price. All prices of this assignment utilized BigDecimal which can store numbers in a better way than primitives because it can expand or contract accordingly. The Item class is there to simply initialize the item with its name, prices, and quantity. I then completed a Junit test case for Item.java which I got 98% code coverage, I did not get 100% coverage because I used private setter methods that EclEmma did not recognize in the constructors. I then created the ItemOrder class which holds Item objects and the quantity of the item selected in cart. This class has also contains a getQuantity method which return the quantity of the item as well as a getItem method which return the Item itself from the ItemOrder. I then created the ShoppingCart class in which I used a HashMap to store the Item name from the ItemOrder as the key and the quantity as the value corresponding to each key. This class also takes into consideration whether the user is a member or not. The add() method takes an ItemOrder and cross references the HashMap to see if the ItemOrder is already in the map or not, if it is in the map then it deletes it from the map and re-adds the ItemOrder with the new quantity. If the HashMap does not contain the ItemOrder already it adds it. The setMembership method simply sets the membership status of the user which is given by the front end using a checkbox. The hardest part of this assignment was probably the calculate total because I had to use a for loop to iterate through the HashMap and then calculate the bulk quantity and prices using the remainder at a base pricing. Then at the end of calculateTotal I created a BigDecimal with the result and set the scale to 2 and ROUND_HALF_EVEN.
+
+
+Unresolved problems in my submission:
+Front end GUI sometimes freezes when checking and unchecking membership status with values already entered, restarting the program seems to fix this issue. Not sure if this is on my end as far as Java runtime environment or if it is a bug in the GUI.
+I only got 98% code coverage for JUnit testing on the Item class because I used private setter methods in my constructor which EclEmma disregards and thinks I am not testing the constructor properly. 
+I also had a few warnings that remained in my code (only the JUnit tests) saying that I was not using variables, but I in fact definitely did use them.
+
+Questions:
+none
+
